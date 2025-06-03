@@ -86,4 +86,5 @@ def parsing(pdf_path: str = "coverage_documents/PDF1.pdf", llm_parse: bool = Fal
 
 if __name__ == "__main__":
     pdf_path = "coverage_documents/PDF1.pdf"
-    parsing(pdf_path, llm_parse=False)
+    output_data = parsing(pdf_path, llm_parse=False)
+    print(json.dumps(output_data, indent=4))
