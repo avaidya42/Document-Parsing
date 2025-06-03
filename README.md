@@ -15,8 +15,8 @@ This project is a tool for parsing insurance policy documents (PDFs) to extract 
 ## Tasks
 - Choose a folder under `other_documents`
 - Go through files to familiarize with the format.
-- Divide the contents into parts that can be manually parsed and those that need LLM assistance
-- Check `utils.py` for desired output feilds
+- Check `utils.py` for desired output fields and divide the contents into parts that can be manually parsed and those that need LLM assistance
+- Write/modify functions to parse the documents to obtain the information in these two categories, and pass the latter to an LLM for conversion to a structured format.
 
 
 ## Project Structure
