@@ -1,0 +1,19 @@
+{
+  "policy_details": {
+    "policy_number": "Not found",
+    "policy_issue_date": "10/05/2024",
+    "date_of_proposal": "Not found",
+    "date_of_expiry": "Not found"
+  },
+  "premium_details": {
+    "cgst": "Not found",
+    "sgst": "Not found",
+    "total_premium": "Not found"
+  },
+  "coverage_details": {
+    "pre_hospitalization": "Not found",
+    "post_hospitalization": "Not found",
+    "maternity_cover": "Not found",
+    "room_rent": "Not found"
+  }
+}
