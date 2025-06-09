@@ -1,0 +1,63 @@
+{
+    "policy_details": {
+        "policy_number": "84726295",
+        "name_policyholder": "MCUBE ADVISORS PRIVATE LIMITED",
+        "policy_start_date": "01-Jun-2024",
+        "policy_end_date": "31-May-2025"
+    },
+    "day_care_treatment": {
+        "day_care_treatment": ""
+    },
+    "pre_and_post_natal_expenses": {
+        "pre_natal": "",
+        "post_natal": ""
+    },
+    "maternity_expenses": {
+        "no_of_deliveries": "",
+        "limit_normal_delivery": "50,000",
+        "limit_C_Section": "50,000",
+        "waiting_period": "9 months"
+    },
+    "corporate_buffer": {
+        "primary_insured_members": "60",
+        "total_sum_insured": "19,800,000"
+    },
+    "refractive_error_correction_expenses": {
+        "si_limit": "",
+        "eye_power": 7.0
+    },
+    "mental_illness": {
+        "benefit_limit": ""
+    },
+    "co_pay": {
+        "policy_co_payment_factor": "50%",
+        "co_pay_type": "femato laser surgery, bio-absorbable Stent, Toric lens, Multi focal Lens"
+    },
+    "road_ambulance": {
+        "road_ambulance_limit": "1,000",
+        "road_ambulance_limit_covid": ""
+    },
+    "ayush_treatment": {
+        "ayush_treatment_limit": "25,000"
+    },
+    "pre_hospitalization": {
+        "pre_hospitalization_period": "30 days"
+    },
+    "post_hospitalization": {
+        "post_hospitalization_period": "60 days"
+    },
+    "pre_existing_disease": {
+        "pre_existing_disease_wait_period": "Waived off"
+    },
+    "room_rent_details": {
+        "sum_insured": "300,000, 500,000",
+        "maximum_eligibility_for_normal_hospitalization": "10,000, 10,000",
+        "maximum_eligibility_for_icu_hospitalization": "No capping, No capping"
+    },
+    "benefits_and_other": {
+        "medical_expences": "",
+        "any_one_accident_limit": "",
+        "accidental_death": "",
+        "funeral_expenses": ""
+    }
+}
