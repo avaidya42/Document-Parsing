@@ -1,0 +1,92 @@
+{
+    "day_care_treatment": {
+        "day_care_treatment": "None"
+    },
+    "organ_donor_expenses": {
+        "organ_donor_expenses": ""
+    },
+    "pre_and_post_natal_expenses_IPD": {
+        "expenses_limit_IPD": "Covered within Maternity Expenses with a capping of INR 5000 in case of IPD only.",
+        "applicability": ""
+    },
+    "maternity_expenses": {
+        "no_of_deliveries": "2",
+        "limit_normal_delivery": "35000",
+        "limit_C_Section": "50000",
+        "waiting_period": ""
+    },
+    "pre_and_post_natal_expenses_OPD": {
+        "expenses_limit_OPD": ""
+    },
+    "corporate_buffer": {
+        "sum_insured": "30500000.00",
+        "type_of_ailment": "",
+        "type_of_coverage": ""
+    },
+    "refractive_error_correction_expenses": {
+        "si_limit": "",
+        "eye_power": 7.5
+    },
+    "hiv_anti_retroviral_therapy": {
+        "hiv_anti_retroviral_therapy": ""
+    },
+    "home_nursing_benefit": {
+        "per_week_benefit": "",
+        "number_of_weeks": ""
+    },
+    "preventive_health_check_up": {
+        "benefit_limit": "",
+        "clinic_options": ""
+    },
+    "opd_expenses": {
+        "benefit_limit": "Not Covered"
+    },
+    "physiotherapy_on_opd_basis": {
+        "benefit_limit": "",
+        "coverage_type": ""
+    },
+    "dental_care": {
+        "benefit_limit": ""
+    },
+    "mental_illness": {
+        "benefit_limit": ""
+    },
+    "vision_expenses_cover": {
+        "benefit_limit": ""
+    },
+    "obesity_control_coverage": {
+        "obesity_control_coverage": ""
+    },
+    "co_pay": {
+        "policy_co_payment_factor": "50%",
+        "co_pay_type": "For cyberknife treatment/Robotic Surgery/Bio-absorbable Stent/FAMETO Laser Surgery/Toric lens/KT Laser Prostate."
+    },
+    "room_rent": {
+        "room_rent_limit": "Normal 100%, ICU 100%, Proportionate clause is not applicable",
+        "options_for_deductions": ""
+    },
+    "road_ambulance": {
+        "road_ambulance_limit": "INR 2000 per hospitalization"
+    },
+    "ayush_treatment": {
+        "ayush_treatment_limit": ""
+    },
+    "medical_advancement_surgery": {
+        "medical_advancement_surgery_limit": ""
+    },
+    "pre_hospitalization": {
+        "pre_hospitalization_period": "Covered upto Sum Insured for 30 days"
+    },
+    "post_hospitalization": {
+        "post_hospitalization_period": "Covered upto Sum Insured for 60 days"
+    },
+    "pre_existing_disease_and_specified_disease": {
+        "pre_existing_disease_and_specified_disease_waiting_period": "Waived Off"
+    },
+    "extra": {
+        "policy_number": "50741000202400",
+        "name_policyholder": "Max India Limited",
+        "policy_start_date": "13/05/2024 12:00 AM",
+        "policy_end_date": "12/05/2025 11:59 PM"
+    }
+}
