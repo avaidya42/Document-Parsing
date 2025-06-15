@@ -1,10 +1,26 @@
 from openai import OpenAI
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2772c60 (Initial commit for New India parser)
 import pandas as pd
 from io import BytesIO
 import re
 import torch
 import gc
 
+<<<<<<< HEAD
+=======
+from dotenv import load_dotenv
+import os
+
+load_dotenv(dotenv_path='api.env')  # 👈 Explicitly load api.env
+api_key = os.getenv("OPENAI_API_KEY")
+
+from openai import OpenAI
+client = OpenAI(api_key=api_key)
+
+>>>>>>> 2772c60 (Initial commit for New India parser)
 
 client = OpenAI(
     api_key='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'
@@ -12,8 +28,11 @@ client = OpenAI(
 sec_api_key = "5b19c57b27218997d0e435e48eae7e9f70c40d06c3c8a10fc2567edac632e70c"
 sec_api_endpoint = "https://api.sec-api.io/filing-reader"
 serp_api_key = "bfedd3505964964bb55e85bba89b8403faf86956ae1e876bbfd413f661704f59"
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 2772c60 (Initial commit for New India parser)
 def get_completion_from_messages(messages, model = 'gpt-4o-mini', temperature=0):
     response = client.chat.completions.create(
         model=model,
@@ -153,6 +172,7 @@ def output_template_unmatched(incl_headings=False):
     if incl_headings:
         return output | heading_outputs
     return output
+<<<<<<< HEAD
 
 
 def output_template_excel():
@@ -197,6 +217,65 @@ def output_template_excel():
                       ["Applicable", "Waived Off"]},
               "medical_advancement_surgery": {
                   "medical_advancement_surgery_limit": ["Upto 25% SI", "Upto 50% SI", "Upto SI"]}}
+=======
+def output_template_unmatched(incl_headings=False):
+    output = {
+        "policy_details": {
+            "policy_number": "",
+            "policy_issue_date": "",
+            "policy_expiry_date": "",
+            "sum_insured": ""
+        },
+        "coverage_details": {
+            "pre_hospitalization_period": "",
+            "post_hospitalization_period": ""
+        },
+        "maternity_benefits": {
+            "limit_normal_delivery": "",
+            "limit_c_section": "",
+            "no_of_deliveries": "",
+            "waiting_period": "",
+            "pre_post_natal_IPD_limit": "",
+            "pre_post_natal_OPD_limit": ""
+        },
+        "room_rent": {
+            "general_limit": "",
+            "icu_limit": "",
+            "deduction_type": ""
+        },
+        "co_pay": {
+            "co_payment_percentage": "",
+            "co_payment_type": ""
+        },
+        "day_care_treatment": {"day_care_treatment": ""},
+        "organ_donor_expenses": {"organ_donor_expenses": ""},
+        "pre_and_post_natal_expenses_IPD": {"expenses_limit_IPD": "", "applicability": ""},
+        "pre_and_post_natal_expenses_OPD": {"expenses_limit_OPD": ""},
+        "corporate_buffer": {
+            "sum_insured": "",
+            "type_of_ailment": "",
+            "type_of_coverage": ""
+        },
+        "refractive_error_correction_expenses": {"si_limit": "", "eye_power": ""},
+        "hiv_anti_retroviral_therapy": {"hiv_anti_retroviral_therapy": ""},
+        "home_nursing_benefit": {"per_week_benefit": "", "number_of_weeks": ""},
+        "preventive_health_check_up": {"benefit_limit": "", "clinic_options": ""},
+        "opd_expenses": {"benefit_limit": ""},
+        "physiotherapy_on_opd_basis": {"benefit_limit": "", "coverage_type": ""},
+        "dental_care": {"benefit_limit": ""},
+        "mental_illness": {"benefit_limit": ""},
+        "vision_expenses_cover": {"benefit_limit": ""},
+        "obesity_control_coverage": {"obesity_control_coverage": ""},
+        "road_ambulance": {"road_ambulance_limit": ""},
+        "ayush_treatment": {"ayush_treatment_limit": ""},
+        "medical_advancement_surgery": {"medical_advancement_surgery_limit": ""}
+    }
+
+    if incl_headings:
+        output["pre_existing_disease_and_specified_disease"] = {
+            "pre_existing_disease_and_specified_disease_waiting_period": ""
+        }
+>>>>>>> 2772c60 (Initial commit for New India parser)
 
     return output
 
@@ -547,3 +626,56 @@ def text_space_cleaner(text):
     text = re.sub(r'-\n', '', text)
     text = re.sub(r'\n', ' ', text)
     return text
+<<<<<<< HEAD
+=======
+
+def reliance_output_template():
+    """Template for Reliance insurance policy output"""
+    return {
+        "policy_details": {
+            "policy_number": "",
+            "policy_issue_date": "",
+            "date_of_proposal": "",
+            "date_of_expiry": ""
+        },
+        "premium_details": {
+            "cgst": "",
+            "sgst": "",
+            "total_premium": ""
+        },
+        "coverage_details": {
+            "pre_hospitalization": "",
+            "post_hospitalization": "",
+            "maternity_cover": "",
+            "room_rent": ""
+        }
+    }
+def output_template_excel():
+    return {
+        "policy_details": {
+            "policy_number": "",
+            "policy_issue_date": "",
+            "date_of_proposal": "",
+            "date_of_expiry": ""
+        },
+        "coverage_details": {
+            "pre_hospitalization": "",
+            "post_hospitalization": ""
+        },
+        "maternity_benefits": {
+            "no_of_deliveries": "",
+            "limit_normal_delivery": "",
+            "limit_C_Section": "",
+            "waiting_period": ""
+        },
+        "room_rent": {
+            "room_rent_limit": "",
+            "options_for_deductions": ""
+        },
+        "co_pay": {
+            "co_pay_type": "",
+            "policy_co_payment_factor": ""
+        }
+    }
+
+>>>>>>> 2772c60 (Initial commit for New India parser)

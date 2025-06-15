@@ -108,6 +108,10 @@ async def pdf_parser(user_id: str, agent_name: str, file: UploadFile = File(...)
             json.dump(llm_out, f3, indent=4)
         return llm_out
     except Exception as e:
+<<<<<<< HEAD
         return {"message": f"Encountered exception {e}"}
 
 
+=======
+        return {"message": f"Encountered exception {e}"}
+>>>>>>> 2772c60 (Initial commit for New India parser)

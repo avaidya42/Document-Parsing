@@ -152,4 +152,7 @@ class OutputFull(BaseModel):
     pre_hospitalization: PreHosp
     post_hospitalization: PostHosp
     pre_existing_disease_and_specified_disease: PreExisting
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2772c60 (Initial commit for New India parser)

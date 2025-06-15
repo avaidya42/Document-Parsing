@@ -2,10 +2,26 @@ from utils import get_completion_from_messages, output_template, output_template
     output_template_excel, get_completion_qwen, get_completion_schema
 import re
 import json
+<<<<<<< HEAD
 from typing import Dict
 from fastapi import HTTPException
 from output_schema import Output, OutputFull
 
+=======
+from typing import Dict, List
+from fastapi import HTTPException
+from output_schema import Output, OutputFull
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv(dotenv_path='api.env')  # 👈 Explicitly load api.env
+api_key = os.getenv("OPENAI_API_KEY")
+
+from openai import OpenAI
+client = OpenAI(api_key=api_key)
+
+>>>>>>> 2772c60 (Initial commit for New India parser)
 
 def prompt_field(data, maternity_expense, room_restrictions):
     template = output_template()
@@ -63,7 +79,10 @@ def prompt_field(data, maternity_expense, room_restrictions):
 
             Do not make guesses, only take data from the document from the \
             relevant sections as present in the template.
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2772c60 (Initial commit for New India parser)
             '''
         },
         {
@@ -71,6 +90,7 @@ def prompt_field(data, maternity_expense, room_restrictions):
             'content': f'Policy Document: \n {data}'
         }
     ]
+<<<<<<< HEAD
     # print(data)
     response = get_completion_from_messages(messages)
     return response
@@ -148,11 +168,82 @@ def prompt_field_unmatched_policy(data, maternity_expense, room_restrictions):
         }
     ]
     # print(data)
+=======
+    response = get_completion_from_messages(messages)
+    return response
+
+def prompt_field_unmatched_policy(data, maternity_expense, room_restrictions, insurer="reliance"):
+    from utils import output_template_unmatched
+    import re
+    from openai_helper import get_completion_from_messages
+ # change this if needed
+
+    template = output_template_unmatched()
+
+    if len(room_restrictions) > 2:
+        room_restrictions = f"Use this information to answer: {room_restrictions}"
+
+    messages = [
+        {
+            'role': 'system',
+            'content': f'''You are an AI data extraction assistant specialized in identifying and extracting specific 
+data fields from unstructured text. The user will provide you with text scraped from an insurance policy document by {insurer.title()}.
+
+Your task is to find the appropriate values for the keys in the dictionary, which are left as empty python strings.
+If the data corresponding to the value of a key is not present in the document, set the value to an empty string.
+
+! Do not:
+- Delete any keys
+- Add new keys
+- Change the structure of the output
+
+Only return the JSON. No commentary or markdown. Use this schema:
+---
+{template}
+---
+
+Guidelines:
+
+1. **Sum Insured / Limits / Numbers**: Only give the number. Do not confirm or deny coverage. If not mentioned, leave empty.
+
+2. **Pre/Post Hospitalization Periods**: 
+   - Should be in number of days.
+   - May appear in a paragraph or table.
+
+3. **Maternity Benefits**: 
+   - limit_normal_delivery and limit_c_section may appear in tables or sentences.
+   - waiting_period might say “9 months waiting period” or “No waiting period”.
+   - Use this fallback if needed: {maternity_expense}
+   - If OPD is not covered, leave OPD limit as an empty string.
+
+4. **Room Rent**: 
+   - {room_restrictions}
+   - ICU and general limits might be separate.
+   - Deduction type may say "Proportionate Deduction", etc.
+
+5. **Co-Pay**:
+   - co_payment_percentage is usually a percentage value like “10%”.
+   - co_payment_type might mention claim or hospital type like "non-network hospitals".
+
+Do not guess. Extract only what is present in the document.
+'''
+        },
+        {
+            'role': 'user',
+            'content': f'Policy Document:\n{data}'
+        }
+    ]
+
+>>>>>>> 2772c60 (Initial commit for New India parser)
     response = get_completion_from_messages(messages)
     json_str = re.search(r'\{.*\}', response, re.DOTALL).group(0)
     return json_str
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2772c60 (Initial commit for New India parser)
 def prompt_field_unmatched_policy_schema(data, maternity_expense, room_restrictions):
     if len(room_restrictions) > 2:
         room_restrictions = f"Use this information to answer: {room_restrictions}"
@@ -178,11 +269,16 @@ def prompt_field_unmatched_policy_schema(data, maternity_expense, room_restricti
 
             3. Do not confuse other sub limits for OPD limit
 
+<<<<<<< HEAD
 
 
             Do not make guesses, only take data from the document from the \
             relevant sections.
 
+=======
+            Do not make guesses, only take data from the document from the \
+            relevant sections.
+>>>>>>> 2772c60 (Initial commit for New India parser)
             '''
         },
         {
@@ -196,9 +292,12 @@ def prompt_field_unmatched_policy_schema(data, maternity_expense, room_restricti
 
 def prompt_field_unmatched_rfq(rfq_text):
     template = output_template_unmatched(incl_headings=True)
+<<<<<<< HEAD
     # template = {"ayush_treatment": {
     #     "ayush_treatment_limit": ""
     # }}
+=======
+>>>>>>> 2772c60 (Initial commit for New India parser)
     messages = [
         {
             'role': 'system',
@@ -255,12 +354,43 @@ def prompt_field_unmatched_rfq(rfq_text):
             'content': f'RFQ Document: \n {rfq_text}'
         }
     ]
+<<<<<<< HEAD
     # print(data)
+=======
+>>>>>>> 2772c60 (Initial commit for New India parser)
     response = get_completion_from_messages(messages)
     json_str = re.search(r'\{.*\}', response, re.DOTALL).group(0)
     return json_str
 
 
+<<<<<<< HEAD
+=======
+def get_extraction_guidance() -> Dict[str, Dict[str, str]]:
+    """Returns field-level extraction instructions"""
+    return {
+        "policy_details": {
+            "policy_number": "Look for 'Policy No:' followed by alphanumeric code",
+            "dates": "Find dates in DD-MM-YYYY format after labels like 'Issue Date'"
+        },
+        "premium_details": {
+            "total_premium": "Locate amount after 'Total Premium' (₹ symbol optional)",
+            "taxes": "Find CGST/SGST values near premium amounts"
+        }
+    }
+
+
+def get_validation_rules() -> Dict[str, List[str]]:
+    """Returns validation regex patterns for each field"""
+    return {
+        "policy_number": [r"^[A-Z]{2,3}-\d{6,8}$", "Invalid policy number format"],
+        "dates": [r"^\d{2}-\d{2}-\d{4}$", "Date must be DD-MM-YYYY"],
+        "currency": [r"^₹?\d{1,3}(,\d{3})*(\.\d{2})?$", "Invalid currency format"]
+    }
+
+
+# [Rest of the functions remain unchanged...]
+
+>>>>>>> 2772c60 (Initial commit for New India parser)
 def prompt_field_unmatched_rfq_schema(rfq_text):
     # template = output_template_unmatched(incl_headings=True)
     # output = OutputFull()
@@ -1331,3 +1461,13 @@ def gmc_mail_update(data, mail):
 
     response = get_completion_from_messages(messages)
     return response
+<<<<<<< HEAD
+=======
+def get_validation_rules() -> Dict[str, List[str]]:
+    """Returns validation regex patterns for each field"""
+    return {
+        "policy_number": [r"^[A-Z]{2,3}-\d{6,8}$", "Invalid policy number format"],
+        "dates": [r"^\d{2}-\d{2}-\d{4}$", "Date must be DD-MM-YYYY"],
+        "currency": [r"^₹?\d{1,3}(,\d{3})*(\.\d{2})?$", "Invalid currency format"]
+    }
+>>>>>>> 2772c60 (Initial commit for New India parser)

@@ -1,0 +1,24 @@
+{
+  "status": "success",
+  "data": {
+    "policy_details": {
+      "policy_number": "14013232843000",
+      "policy_issue_date": "10/05/2024",
+      "date_of_proposal": "UNKNOWN",
+      "date_of_expiry": "UNKNOWN"
+    },
+    "premium_details": {
+      "cgst": null,
+      "sgst": null,
+      "total_premium": "600"
+    },
+    "coverage_details": {
+      "pre_hospitalization": null,
+      "post_hospitalization": null,
+      "maternity_cover": null,
+      "room_rent": null
+    }
+  },
+  "error": null
+}{"timestamp": "2025-06-07 03:23:09", "status": "success", "error": null, "file": "C:\\Users\\vaasu\\Documents\\GitHub\\document_parsing\\Policy copy 24-25.pdf"}
+{"timestamp": "2025-06-08 12:54:54", "status": "success", "error": null, "file": "C:\\Users\\vaasu\\Documents\\GitHub\\document_parsing\\Policy copy 24-25.pdf"}
