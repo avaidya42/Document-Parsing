@@ -1,0 +1,93 @@
+{
+    "day_care_treatment": {
+        "day_care_treatment": ""
+    },
+    "organ_donor_expenses": {
+        "organ_donor_expenses": ""
+    },
+    "pre_and_post_natal_expenses_IPD": {
+        "expenses_limit_IPD": "5000",
+        "applicability": "Covered within Maternity benefit limit"
+    },
+    "maternity_expenses": {
+        "no_of_deliveries": "2",
+        "limit_normal_delivery": "50000",
+        "limit_C_Section": "75000",
+        "waiting_period": "9 months"
+    },
+    "pre_and_post_natal_expenses_OPD": {
+        "expenses_limit_OPD": "5000"
+    },
+    "corporate_buffer": {
+        "sum_insured": "135,500,000.00",
+        "type_of_ailment": "Not applicable for maternity claims and non-allopathic treatment",
+        "type_of_coverage": "Corporate Buffer available Up to Family SI"
+    },
+    "refractive_error_correction_expenses": {
+        "si_limit": "30000",
+        "eye_power": 7.5
+    },
+    "hiv_anti_retroviral_therapy": {
+        "hiv_anti_retroviral_therapy": "Covered on IPD basis up to 10% of Individual or Family SI limit or Rs 1 lac per insured"
+    },
+    "home_nursing_benefit": {
+        "per_week_benefit": "",
+        "number_of_weeks": ""
+    },
+    "preventive_health_check_up": {
+        "benefit_limit": "7000",
+        "clinic_options": "Only for 17 employees"
+    },
+    "opd_expenses": {
+        "benefit_limit": ""
+    },
+    "physiotherapy_on_opd_basis": {
+        "benefit_limit": "",
+        "coverage_type": ""
+    },
+    "dental_care": {
+        "benefit_limit": ""
+    },
+    "mental_illness": {
+        "benefit_limit": "Covered on IPD basis up to 10% of Individual or Family SI limit or Rs 1 lac per insured"
+    },
+    "vision_expenses_cover": {
+        "benefit_limit": ""
+    },
+    "obesity_control_coverage": {
+        "obesity_control_coverage": ""
+    },
+    "co_pay": {
+        "policy_co_payment_factor": "0.0% for Network, 10.0% for Non-Network",
+        "co_pay_type": "Network and Non-Network"
+    },
+    "room_rent": {
+        "room_rent_limit": "No room rent capping",
+        "options_for_deductions": ""
+    },
+    "road_ambulance": {
+        "road_ambulance_limit": "2000"
+    },
+    "ayush_treatment": {
+        "ayush_treatment_limit": "25000"
+    },
+    "medical_advancement_surgery": {
+        "medical_advancement_surgery_limit": "50% of Sum Insured for specified procedures"
+    },
+    "pre_hospitalization": {
+        "pre_hospitalization_period": "30 days"
+    },
+    "post_hospitalization": {
+        "post_hospitalization_period": "60 days"
+    },
+    "pre_existing_disease_and_specified_disease": {
+        "pre_existing_disease_and_specified_disease_waiting_period": "Waived"
+    },
+    "extra": {
+        "policy_number": "4101230500000082-01",
+        "name_policyholder": "KARCHER CLEANING SYSTEMS PRIVATE LIMITED",
+        "policy_start_date": "From 01-05-2024 (00:00:00 Hrs)",
+        "policy_end_date": "30-042025 (23:59:59 Hrs)",
+        "total_number_insured": "743 [Commencement of Policy]"
+    }
+}
