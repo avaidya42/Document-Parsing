@@ -1,15 +1,10 @@
 import sys
 import json
-<<<<<<< HEAD
-import ast
-from reliance_module import parse_reliance_pdf  # Make sure this returns a dict, not a string
-=======
 import pdfplumber
 
+from reliance_module import parse_reliance_pdf_text
 from parse_tataaig_pdf import parse_tata_aig_pdf_text
-
 from parse_new_india_pdf import parse_new_india_pdf_text
-
 
 def extract_text_from_pdf(pdf_path):
     text = ""
@@ -19,7 +14,6 @@ def extract_text_from_pdf(pdf_path):
             if page_text:
                 text += page_text + "\n"
     return text
-
 
 def detect_insurer(text: str) -> str:
     upper_text = text.upper()
@@ -32,31 +26,12 @@ def detect_insurer(text: str) -> str:
     else:
         return "unknown"
 
->>>>>>> 2772c60 (Initial commit for New India parser)
-
 def main():
     if len(sys.argv) != 2:
         print("Usage: python main.py <path_to_pdf>")
         return
 
     pdf_path = sys.argv[1]
-<<<<<<< HEAD
-    result = parse_reliance_pdf(pdf_path)
-
-    # Safety: convert string dict to real dict if needed
-    if isinstance(result, str):
-        try:
-            result = ast.literal_eval(result)
-        except Exception as e:
-            print("❌ Error converting string to dict:", e)
-            return
-
-    # Save output to JSON file
-    with open("output.json", "w") as f:
-        json.dump(result, f, indent=4)
-
-    print("✅ Output saved to output.json")
-=======
     pdf_text = extract_text_from_pdf(pdf_path)
     insurer = detect_insurer(pdf_text)
 
@@ -74,8 +49,6 @@ def main():
         json.dump(result, f, indent=4, ensure_ascii=False)
 
     print(f"✅ {insurer.upper()} output saved to output.json")
-
->>>>>>> 2772c60 (Initial commit for New India parser)
 
 if __name__ == "__main__":
     main()
