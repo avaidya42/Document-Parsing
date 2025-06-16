@@ -1,4 +1,4 @@
-from utils import get_completion_json
+from utils import get_completion_json,output_template
 from output_schema import OutputFull
 
 def generate_llm_prompt(unstructured_text: str):
@@ -11,7 +11,7 @@ def generate_llm_prompt(unstructured_text: str):
                 sum_insured: List all values under the Sum Insured column (do not extract any values from other columns).\
                 maximum_eligibility_for_normal_hospitalization: List all values under the Maximum eligibility for Normal Hospitalization column.\
                 maximum_eligibility_for_icu_hospitalization: List all values under the Maximum eligibility for ICU Hospitalization column.\
-          Return it as JSON:\n\n{unstructured_text}"}
+          Return it as JSON in this template form{output_template} :\n\n{unstructured_text}"}
     ]
 
 def get_llm_output(text: str):
