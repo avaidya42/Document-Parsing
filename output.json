@@ -1,30 +1,31 @@
 {
     "day_care_treatment": {
-        "day_care_treatment": "Sum Insured"
+        "day_care_treatment": ""
     },
     "organ_donor_expenses": {
-        "organ_donor_expenses": "Upto 200000"
+        "organ_donor_expenses": ""
     },
     "pre_and_post_natal_expenses_IPD": {
-        "expenses_limit_IPD": "",
-        "applicability": ""
+        "expenses_limit_IPD": "5000",
+        "applicability": "within the overall maternity limit for a period of 30 days"
     },
     "maternity_expenses": {
-        "limit_normal_delivery": "INR 50000",
-        "limit_C_Section": "Upto 50000",
-        "waiting_period": "Waiting"
+        "no_of_deliveries": "2 dependent children only.",
+        "limit_normal_delivery": "50000",
+        "limit_C_Section": "50000",
+        "waiting_period": "9 months waived for all Insured Members"
     },
     "pre_and_post_natal_expenses_OPD": {
         "expenses_limit_OPD": ""
     },
     "corporate_buffer": {
-        "sum_insured": "",
-        "type_of_ailment": "",
-        "type_of_coverage": ""
+        "sum_insured": "1000000",
+        "type_of_ailment": "Critical Illnesses only after exhausting family floater Sum Insured.",
+        "type_of_coverage": "Corporate Floater"
     },
     "refractive_error_correction_expenses": {
-        "si_limit": "Applicable for All Members",
-        "eye_power": ""
+        "si_limit": "",
+        "eye_power": 7.0
     },
     "hiv_anti_retroviral_therapy": {
         "hiv_anti_retroviral_therapy": ""
@@ -45,22 +46,48 @@
         "coverage_type": ""
     },
     "dental_care": {
-        "benefit_limit": "Covered in case of"
+        "benefit_limit": ""
     },
     "mental_illness": {
-        "benefit_limit": "Applicable for All Members"
+        "benefit_limit": "50% of SI"
     },
     "vision_expenses_cover": {
-        "benefit_limit": "30000 Per Eye"
+        "benefit_limit": ""
     },
     "obesity_control_coverage": {
-        "obesity_control_coverage": ""
+        "obesity_control_coverage": "50% of SI"
+    },
+    "co_pay": {
+        "policy_co_payment_factor": "50%",
+        "co_pay_type": "for femato laser surgery, bio-absorbable Stent, Toric lens, Multi focal Lens."
+    },
+    "room_rent": {
+        "room_rent_limit": "Restricted to Rs.10,000 for Normal and ICU Hospitalization",
+        "options_for_deductions": "Insured Member shall bear the ratable proportion of the Associated Medical Expenses."
+    },
+    "road_ambulance": {
+        "road_ambulance_limit": "1000"
+    },
+    "ayush_treatment": {
+        "ayush_treatment_limit": "25000"
+    },
+    "medical_advancement_surgery": {
+        "medical_advancement_surgery_limit": "50% of SI"
+    },
+    "pre_hospitalization": {
+        "pre_hospitalization_period": "30 days"
+    },
+    "post_hospitalization": {
+        "post_hospitalization_period": "60 days"
+    },
+    "pre_existing_disease_and_specified_disease": {
+        "pre_existing_disease_and_specified_disease_waiting_period": "Waived off"
     },
     "extra": {
-        "in_patient_treatment": "INR 200000",
-        "organ_donor": "200000",
-        "nursing_allowance": "INR 100",
-        "hospital_cash": "INR 500",
-        "emergency_air_ambulance": ""
+        "policy_number": "84726295",
+        "name_policyholder": "MCUBE ADVISORS PRIVATE LIMITED",
+        "policy_start_date": "01-Jun-2024",
+        "policy_end_date": "31-May-2025",
+        "primary_insured_members": "60"
     }
 }
