@@ -99,6 +99,7 @@ class Extra(BaseModel):
     name_policyholder: str
     policy_start_date: str
     policy_end_date: str
+    primary_insured_members: str
 
 class Output(BaseModel):
     day_care_treatment: DayCare

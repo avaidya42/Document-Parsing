@@ -17,17 +17,17 @@ def final_parser(pdf_path, output_path="llm_result.json"):
     final = {**llm_output}
 
     if "policy_no" in structured_data:
-        final["policy_details"]["policy_number"] = structured_data["policy_number"]
+        final["extra"]["policy_number"] = structured_data["policy_number"]
     if "name_policyholder" in structured_data:
-        final["policy_details"]["name_policyholder"] = structured_data["name_policyholder"]
+        final["extra"]["name_policyholder"] = structured_data["name_policyholder"]
     if "policy_start_date" in structured_data:
-        final["policy_details"]["policy_start_date"] = structured_data["policy_start_date"]
+        final["extra"]["policy_start_date"] = structured_data["policy_start_date"]
     if "policy_end_date" in structured_data:
-        final["policy_details"]["policy_end_date"] = structured_data["policy_end_date"]
+        final["extra"]["policy_end_date"] = structured_data["policy_end_date"]
     if "sum_insured" in structured_data:
         final["corporate_buffer"]["total_sum_insured"] = structured_data["total_sum_insured"]
     if "primary_insured_members" in structured_data:
-        final["corporate_buffer"]["primary_insured_members"] = structured_data["primary_insured_members"]
+        final["extra"]["primary_insured_members"] = structured_data["primary_insured_members"]
 
     # clean values
     rec_modifier(final)
