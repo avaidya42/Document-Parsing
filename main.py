@@ -1,8 +1,14 @@
 import sys
 import json
+
 import ast
 # from reliance_module import parse_reliance_pdf  # Make sure this returns a dict, not a string
 import pdfplumber 
+
+import pdfplumber
+
+from reliance_module import parse_reliance_pdf_text
+
 from parse_tataaig_pdf import parse_tata_aig_pdf_text
 from parse_new_india_pdf import parse_new_india_pdf_text
 from parse_carehealth_pdf import final_parser_carehealth
@@ -12,7 +18,6 @@ from aditya_parser import parse_aditya
 from digit_parser import parse_digit_pdf
 from icici_parser import parse_icici
 
-
 def extract_text_from_pdf(pdf_path):
     text = ""
     with pdfplumber.open(pdf_path) as pdf:
@@ -21,7 +26,6 @@ def extract_text_from_pdf(pdf_path):
             if page_text:
                 text += page_text + "\n"
     return text
-
 
 def detect_insurer(text: str) -> str:
     upper_text = text.upper()
@@ -52,6 +56,7 @@ def main():
         return
 
     pdf_path = sys.argv[1]
+
     # result = parse_reliance_pdf(pdf_path)
 
     # # Safety: convert string dict to real dict if needed
@@ -67,6 +72,7 @@ def main():
     #     json.dump(result, f, indent=4)
 
     # print("✅ Output saved to output.json")
+
 
     pdf_text = extract_text_from_pdf(pdf_path)
     insurer = detect_insurer(pdf_text)
@@ -98,7 +104,6 @@ def main():
         json.dump(result, f, indent=4, ensure_ascii=False)
 
     print(f"✅ {insurer.upper()} output saved to output.json")
-
 
 if __name__ == "__main__":
     main()
