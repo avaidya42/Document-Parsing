@@ -67,7 +67,7 @@ from prompt_utils_common import get_llm_output
 from output_schema_common import OutputFull
 from utils_common import rec_modifier
 
-def final_parser(pdf_path):
+def final_parser_carehealth(pdf_path):
     # extracting structured values from tables
     tables = extract_tables_from_pdf(pdf_path)
     structured_data = parse_table_data(tables)

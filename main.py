@@ -5,7 +5,9 @@ import ast
 import pdfplumber 
 from parse_tataaig_pdf import parse_tata_aig_pdf_text
 from parse_new_india_pdf import parse_new_india_pdf_text
-from parse_carehealth_pdf import final_parser
+from parse_carehealth_pdf import final_parser_carehealth
+from parse_NivaBupa_format import final_parser_nivabupa
+from parse_SBIgeneralinsurance_format import final_parser_SBIgeneral
 
 
 def extract_text_from_pdf(pdf_path):
@@ -28,6 +30,10 @@ def detect_insurer(text: str) -> str:
         return "new_india"
     elif "CARE HEALTH INSURANCE LIMITED" in upper_text:
         return "carehealth"
+    elif "NIVA BUPA" is upper_text:
+        return "nivabupa"
+    elif "SBI GENERAL" in upper_text:
+        return "sbigeneral"
     else:
         return "unknown"
 
@@ -64,7 +70,11 @@ def main():
     elif insurer == "new_india":
         result = parse_new_india_pdf_text(pdf_text)
     elif insurer == "carehealth":
-        result = final_parser(pdf_path)
+        result = final_parser_carehealth(pdf_path)
+    elif insurer == "nivabupa":
+        result = final_parser_nivabupa(pdf_path)
+    elif insurer == "sbigeneral":
+        result = final_parser_SBIgeneral
     else:
         print("❌ Insurer not recognized. Please check the document.")
         return

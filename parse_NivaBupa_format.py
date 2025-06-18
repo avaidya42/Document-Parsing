@@ -70,12 +70,12 @@ def extract_text_from_scanned_pdf(pdf_path):
     return text_space_cleaner(full_text)
 
 import json
-from parsing_utils import extract_tables_from_pdf, extract_unstructured_text, parse_table_data, extract_text_from_scanned_pdf
-from prompt_utils import get_llm_output
-from output_schema import OutputFull
-from utils import rec_modifier
+# from parsing_utils import extract_tables_from_pdf, extract_unstructured_text, parse_table_data, extract_text_from_scanned_pdf
+from prompt_utils_common import get_llm_output
+from output_schema_common import OutputFull
+from utils_common import rec_modifier
 
-def final_parser(pdf_path, output_path="llm_result.json"):
+def final_parser_nivabupa(pdf_path):
     # try structured table extraction
     tables = extract_tables_from_pdf(pdf_path)
     structured_data = parse_table_data(tables)
