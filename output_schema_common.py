@@ -94,13 +94,6 @@ class PostHosp(BaseModel):
 class PreExisting(BaseModel):
     pre_existing_disease_and_specified_disease_waiting_period: str
 
-class Extra(BaseModel):
-    policy_number: str
-    name_policyholder: str
-    policy_start_date: str
-    policy_end_date: str
-    primary_insured_members: str
-
 class Output(BaseModel):
     day_care_treatment: DayCare
     organ_donor_expenses: OrganDonor
@@ -134,6 +127,27 @@ class Output(BaseModel):
                                                             "for Cyberknife treatment, Stem Cell Transplantation, "
                                                             "Cochlear Implant")
 
+class Extra(BaseModel):
+    policy_number: str
+    name_policyholder: str
+    policy_start_date: str
+    policy_end_date: str
+    primary_insured_members: str
+    attack_cover_limit: str
+    max_limit: str
+    change_policy: str
+    covered_under_SI: str
+    treatment_limit: str
+    cataract_sublimit: str
+    wellness_benefits: str
+    reasonable_and_customary_clause: str
+    non_selection_clause: str
+    doctor_fee_exclusion: str
+    air_ambulance_limit: str  
+    lasik_coverage_limit: str  
+    psychiatric_ailment_limit: str
+
+
 class OutputFull(BaseModel):
     day_care_treatment: DayCare
     organ_donor_expenses: OrganDonor
@@ -159,5 +173,4 @@ class OutputFull(BaseModel):
     pre_hospitalization: PreHosp
     post_hospitalization: PostHosp
     pre_existing_disease_and_specified_disease: PreExisting
-    extra : Extra
-
+    extra: Extra

@@ -1,44 +1,78 @@
 {
-    "policy_details": {
-        "policy_number": "84726295",
-        "name_policyholder": "MCUBE ADVISORS PRIVATE LIMITED",
-        "policy_start_date": "01-Jun-2024",
-        "policy_end_date": "31-May-2025"
-    },
     "day_care_treatment": {
-        "day_care_treatment": ""
+        "day_care_treatment": "List of Day Care procedure attached as \u201cAnnexure A under Know your policy Better\u201d"
     },
-    "pre_and_post_natal_expenses": {
-        "pre_natal": "",
-        "post_natal": ""
+    "organ_donor_expenses": {
+        "organ_donor_expenses": ""
+    },
+    "pre_and_post_natal_expenses_IPD": {
+        "expenses_limit_IPD": "Rs.5,000/- within the overall maternity limit for a period of 30 days",
+        "applicability": "Maternity Expenses Benefit is available for Employees or Spouse Only if covered in data."
     },
     "maternity_expenses": {
-        "no_of_deliveries": "",
-        "limit_normal_delivery": "50,000",
-        "limit_C_Section": "50,000",
-        "waiting_period": "9 months"
+        "no_of_deliveries": "first two dependent children only",
+        "limit_normal_delivery": "Rs. 50,000",
+        "limit_C_Section": "Rs. 50,000",
+        "waiting_period": "9 month waiting period in respect of maternity claims waived for all Insured Members."
+    },
+    "pre_and_post_natal_expenses_OPD": {
+        "expenses_limit_OPD": ""
     },
     "corporate_buffer": {
-        "primary_insured_members": "60",
-        "total_sum_insured": "19,800,000"
+        "sum_insured": "Rs. 10 LAKHS",
+        "type_of_ailment": "Critical Illness",
+        "type_of_coverage": "Corporate Floater"
     },
     "refractive_error_correction_expenses": {
-        "si_limit": "",
+        "si_limit": "50% of SI",
         "eye_power": 7.0
     },
-    "mental_illness": {
+    "hiv_anti_retroviral_therapy": {
+        "hiv_anti_retroviral_therapy": ""
+    },
+    "home_nursing_benefit": {
+        "per_week_benefit": "",
+        "number_of_weeks": ""
+    },
+    "preventive_health_check_up": {
+        "benefit_limit": "",
+        "clinic_options": ""
+    },
+    "opd_expenses": {
         "benefit_limit": ""
+    },
+    "physiotherapy_on_opd_basis": {
+        "benefit_limit": "",
+        "coverage_type": ""
+    },
+    "dental_care": {
+        "benefit_limit": ""
+    },
+    "mental_illness": {
+        "benefit_limit": "50% of SI"
+    },
+    "vision_expenses_cover": {
+        "benefit_limit": "10% SI or Rs 50,000 whichever is lower"
+    },
+    "obesity_control_coverage": {
+        "obesity_control_coverage": "50% of SI"
     },
     "co_pay": {
         "policy_co_payment_factor": "50%",
-        "co_pay_type": "femato laser surgery, bio-absorbable Stent, Toric lens, Multi focal Lens"
+        "co_pay_type": "for femato laser surgery, bio-absorbable Stent, Toric lens, Multi focal Lens"
+    },
+    "room_rent": {
+        "room_rent_limit": "Restricted to Rs.10,000",
+        "options_for_deductions": "the Insured Member shall bear the ratable proportion of the Associated Medical Expenses"
     },
     "road_ambulance": {
-        "road_ambulance_limit": "1,000",
-        "road_ambulance_limit_covid": ""
+        "road_ambulance_limit": "up to a maximum amount of Rs. 1,000/- per claim"
     },
     "ayush_treatment": {
-        "ayush_treatment_limit": "25,000"
+        "ayush_treatment_limit": "Rs. 25,000"
+    },
+    "medical_advancement_surgery": {
+        "medical_advancement_surgery_limit": "50% of SI"
     },
     "pre_hospitalization": {
         "pre_hospitalization_period": "30 days"
@@ -46,18 +80,14 @@
     "post_hospitalization": {
         "post_hospitalization_period": "60 days"
     },
-    "pre_existing_disease": {
-        "pre_existing_disease_wait_period": "Waived off"
+    "pre_existing_disease_and_specified_disease": {
+        "pre_existing_disease_and_specified_disease_waiting_period": "Waived off"
     },
-    "room_rent_details": {
-        "sum_insured": "300,000, 500,000",
-        "maximum_eligibility_for_normal_hospitalization": "10,000, 10,000",
-        "maximum_eligibility_for_icu_hospitalization": "No capping, No capping"
-    },
-    "benefits_and_other": {
-        "medical_expences": "",
-        "any_one_accident_limit": "",
-        "accidental_death": "",
-        "funeral_expenses": ""
+    "extra": {
+        "policy_number": "84726295",
+        "name_policyholder": "MCUBE ADVISORS PRIVATE LIMITED",
+        "policy_start_date": "01-Jun-2024",
+        "policy_end_date": "31-May-2025",
+        "primary_insured_members": "60"
     }
 }

@@ -1,5 +1,5 @@
-from utils import get_completion_json, text_space_cleaner,output_template
-from output_schema import OutputFull
+from utils_common import get_completion_json, text_space_cleaner,output_template
+from output_schema_common import OutputFull
 
 def generate_llm_prompt(unstructured_text: str):
     template = output_template(incl_headings=True)  # use True if you want extra hints

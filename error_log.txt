@@ -1,4 +1,0 @@
-data/Policy copy 24-25.pdf | [Errno 2] No such file or directory: 'data/Policy copy 24-25.pdf'
-C:\Users\vaasu\Documents\GitHub\document_parsing\Policy copy 24-25.pdf | Missing required field: premium_details.total_premium
-C:\Users\vaasu\Documents\GitHub\document_parsing\Policy copy 24-25.pdf | Missing required field: premium_details.total_premium
-C:\Users\vaasu\Documents\GitHub\document_parsing\Policy copy 24-25.pdf | Processing failed: PDF parsing failed: unknown extension ?  at position 6
