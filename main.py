@@ -8,6 +8,9 @@ from parse_new_india_pdf import parse_new_india_pdf_text
 from parse_carehealth_pdf import final_parser_carehealth
 from parse_NivaBupa_format import final_parser_nivabupa
 from parse_SBIgeneralinsurance_format import final_parser_SBIgeneral
+from aditya_parser import parse_aditya
+from digit_parser import parse_digit_pdf
+from icici_parser import parse_icici
 
 
 def extract_text_from_pdf(pdf_path):
@@ -30,10 +33,16 @@ def detect_insurer(text: str) -> str:
         return "new_india"
     elif "CARE HEALTH INSURANCE LIMITED" in upper_text:
         return "carehealth"
-    elif "NIVA BUPA" is upper_text:
+    elif "NIVA BUPA" in upper_text:
         return "nivabupa"
     elif "SBI GENERAL" in upper_text:
         return "sbigeneral"
+    elif "ADITYA BIRLA" in upper_text:
+        return "aditya"
+    elif "ICICI LOMBARD" in upper_text:
+        return "icici"
+    elif "DIGIT INSURANCE" in upper_text or "GO DIGIT" in upper_text or "DIGIT HEALTH" in upper_text:
+        return "digit"
     else:
         return "unknown"
 
@@ -74,7 +83,13 @@ def main():
     elif insurer == "nivabupa":
         result = final_parser_nivabupa(pdf_path)
     elif insurer == "sbigeneral":
-        result = final_parser_SBIgeneral
+        result = final_parser_SBIgeneral(pdf_path)
+    elif insurer == "aditya":
+        result = parse_aditya(pdf_path)
+    elif insurer == "icici":
+        result = parse_icici(pdf_path)
+    elif insurer == "digit":
+        result = parse_digit_pdf(pdf_path)
     else:
         print("❌ Insurer not recognized. Please check the document.")
         return
