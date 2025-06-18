@@ -5,47 +5,74 @@ def parse_reliance_pdf(pdf_path):
     reader = PdfReader(pdf_path)
     text = ""
     for page in reader.pages:
-        extracted = page.extract_text()
-        if extracted:
-            text += extracted + "\n"
+        content = page.extract_text()
+        if content:
+            text += content + "\n"
 
     text = re.sub(r'\s+', ' ', text)
 
-    # --- Improved regex patterns ---
-    co_pay_match = re.search(r'\b(\d{1,2})%\b.*?Co-?pay', text, re.IGNORECASE)
-    ambulance_match = re.search(r'Ambulance[^.]*?(?:INR|₹)?\s*[, ]?(\d{3,6})', text, re.IGNORECASE)
-    normal_delivery = re.search(r'Normal\s+Delivery\s*[:-]?\s*(?:INR|₹)?\s*[, ]?(\d{2,6})', text, re.IGNORECASE)
-    c_section = re.search(r'(?:LSCS|C[\s-]?Section)\s*[:-]?\s*(?:INR|₹)?\s*[, ]?(\d{2,6})', text, re.IGNORECASE)
-    no_of_deliveries = re.search(r'(?:No(?:\.|umber)?\s*of\s*Deliver(?:y|ies))\s*[:-]?\s*(\d{1,2})', text, re.IGNORECASE)
-    waiting = re.search(r'Waiting\s*Period\s*[:-]?\s*(\d{1,4})', text, re.IGNORECASE)
-    pre_hosp = re.search(r'Pre[- ]?Hospitalization.*?(\d+)', text, re.IGNORECASE)
-    post_hosp = re.search(r'Post[- ]?Hospitalization.*?(\d+)', text, re.IGNORECASE)
-    room_rent_match = re.search(r'Room Rent.*?(2%.*?4%.*?\))', text, re.IGNORECASE)
+    def extract(patterns, group=1, default=""):
+        for pat in patterns:
+            match = re.search(pat, text, re.IGNORECASE)
+            if match:
+                return match.group(group).strip()
+        return default
 
-    return {
-        "day_care_treatment": {"day_care_treatment": ""},
-        "organ_donor_expenses": {"organ_donor_expenses": ""},
+    result = {
+        "name": {
+            "policy_number": extract([
+                r'Policy\s*Number\s*[:\-]?\s*(\d+)',
+                r'Policy\s*No\s*[:\-]?\s*(\d+)',
+            ]),
+            "date_of_expiry": extract([
+                r'Date\s*of\s*expiry\s*[:\-]?\s*([0-9]{2}/[0-9]{2}/[0-9]{4})',
+                r'to\s+mid\s+night\s+on\s+([0-9]{2}/[0-9]{2}/[0-9]{4})',
+            ]),
+            "total_sum_insured": extract([
+                r'Total\s+Sum\s+Insured\s*\(?Rs\)?[:\-]?\s*([\d,]+)',
+                r'Total\s+Sum\s+Insured\s*\(?INR\)?[:\-]?\s*([\d,]+)'
+            ]).replace(",", "")
+        },
+        "day_care_treatment": {
+            "day_care_treatment": extract([r'day\s*care\s*procedures\s*covered\s*as\s*per\s*(RGICL.*?)list'])
+        },
+        "organ_donor_expenses": {
+            "organ_donor_expenses": ""
+        },
         "pre_and_post_natal_expenses_IPD": {
             "expenses_limit_IPD": "",
             "applicability": ""
         },
         "maternity_expenses": {
-            "no_of_deliveries": no_of_deliveries.group(1) if no_of_deliveries else "",
-            "limit_normal_delivery": normal_delivery.group(1) if normal_delivery else "",
-            "limit_C_Section": c_section.group(1) if c_section else "",
-            "waiting_period": waiting.group(1) if waiting else ""
+            "limit_normal_delivery": extract([
+                r'Normal\s*Delivery\s*[:\-]?\s*Rs\.?\s*([\d,]+)',
+                r'Normal\s*Limits[:\-]?\s*Rs\.?\s*([\d,]+)',
+                r'Normal\s*Delivery\s*[:\-]?\s*INR\s*([\d,]+)'
+            ]),
+            "limit_C_Section": extract([
+                r'(?:C[\s\-]?Section|LSCS).*?[:\-]?\s*Rs\.?\s*([\d,]+)',
+                r'C[-\s]?section\s*Delivery\s*[:\-]?\s*Rs\.?\s*([\d,]+)'
+            ]),
+            "no_of_deliveries": extract([
+                r'first\s+(\d+)\s+(?:delivery|deliveries|living children)'
+            ]),
+            "waiting_period": extract([
+                r'Maternity\s+waiting\s+period.*?(Waived|Not\s+Applicable|[0-9]+)'
+            ])
         },
         "pre_and_post_natal_expenses_OPD": {
             "expenses_limit_OPD": ""
         },
         "corporate_buffer": {
-            "sum_insured": "",
+            "sum_insured": extract([
+                r'Corporate\s+Buffer\s+.*?Rs\.?\s*([\d,]+)'
+            ]),
             "type_of_ailment": "",
             "type_of_coverage": ""
         },
         "refractive_error_correction_expenses": {
             "si_limit": "",
-            "eye_power": 0.0
+            "eye_power": ""
         },
         "hiv_anti_retroviral_therapy": {
             "hiv_anti_retroviral_therapy": ""
@@ -78,15 +105,27 @@ def parse_reliance_pdf(pdf_path):
             "obesity_control_coverage": ""
         },
         "co_pay": {
-            "policy_co_payment_factor": co_pay_match.group(1) + "%" if co_pay_match else "",
-            "co_pay_type": "Specified illness" if "Specified illness" in text else ""
+            "co_payment_percentage": extract([
+                r'Co[- ]?pay.*?(\d{1,2})%',
+                r'(\d{1,2})%\s*Co[- ]?pay'
+            ], default="") + "%" if extract([r'(\d{1,2})%\s*Co[- ]?pay']) else "",
+            "co_payment_type": extract([
+                r'co[- ]?payment.*?(Proportionate.*?|Specified.*?Clause)'
+            ])
         },
         "room_rent": {
-            "room_rent_limit": room_rent_match.group(1) if room_rent_match else "",
+            "room_rent_limit": extract([
+                r'Room\s*Rent.*?(2%.*?4%.*?)\)',
+                r'Room\s*Rent.*?inclusive.*?charges.*?([^\n]+?maximum.*?)\)'
+            ]),
             "options_for_deductions": "Proportionate Deduction" if "Proportionate Deduction" in text else ""
         },
         "road_ambulance": {
-            "road_ambulance_limit": ambulance_match.group(1) if ambulance_match else ""
+            "road_ambulance_limit": extract([
+                r'Ambulance\s+charges\s+.*?Rs\.?\s*([\d,]+)',
+                r'Ambulance.*?(?:INR|₹)?\s*([\d,]+)',
+                r'Emergency\s+ambulance\s+(?:INR|₹)?\s*([\d,]+)'
+            ])
         },
         "ayush_treatment": {
             "ayush_treatment_limit": ""
@@ -95,12 +134,20 @@ def parse_reliance_pdf(pdf_path):
             "medical_advancement_surgery_limit": ""
         },
         "pre_hospitalization": {
-            "pre_hospitalization_period": pre_hosp.group(1) if pre_hosp else ""
+            "pre_hospitalization_period": extract([
+                r'Pre\s*[- ]?Hospitalization\s*[:\-]?\s*(\d{1,3})'
+            ])
         },
         "post_hospitalization": {
-            "post_hospitalization_period": post_hosp.group(1) if post_hosp else ""
+            "post_hospitalization_period": extract([
+                r'Post\s*[- ]?Hospitalization\s*[:\-]?\s*(\d{1,3})'
+            ])
         },
         "pre_existing_disease_and_specified_disease": {
-            "pre_existing_disease_and_specified_disease_waiting_period": waiting.group(1) if waiting else ""
+            "pre_existing_disease_and_specified_disease_waiting_period": extract([
+                r'Pre[-\s]?existing.*?(Waived|[0-9]+)'
+            ])
         }
     }
+
+    return result
