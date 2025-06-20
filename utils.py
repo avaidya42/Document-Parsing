@@ -1,16 +1,10 @@
 from openai import OpenAI
-<<<<<<< HEAD
-=======
-
->>>>>>> 2772c60 (Initial commit for New India parser)
 import pandas as pd
 from io import BytesIO
 import re
 import torch
 import gc
 
-<<<<<<< HEAD
-=======
 from dotenv import load_dotenv
 import os
 
@@ -20,7 +14,6 @@ api_key = os.getenv("OPENAI_API_KEY")
 from openai import OpenAI
 client = OpenAI(api_key=api_key)
 
->>>>>>> 2772c60 (Initial commit for New India parser)
 
 client = OpenAI(
     api_key='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'
@@ -28,11 +21,8 @@ client = OpenAI(
 sec_api_key = "5b19c57b27218997d0e435e48eae7e9f70c40d06c3c8a10fc2567edac632e70c"
 sec_api_endpoint = "https://api.sec-api.io/filing-reader"
 serp_api_key = "bfedd3505964964bb55e85bba89b8403faf86956ae1e876bbfd413f661704f59"
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 2772c60 (Initial commit for New India parser)
 def get_completion_from_messages(messages, model = 'gpt-4o-mini', temperature=0):
     response = client.chat.completions.create(
         model=model,
@@ -172,7 +162,6 @@ def output_template_unmatched(incl_headings=False):
     if incl_headings:
         return output | heading_outputs
     return output
-<<<<<<< HEAD
 
 
 def output_template_excel():
@@ -217,7 +206,8 @@ def output_template_excel():
                       ["Applicable", "Waived Off"]},
               "medical_advancement_surgery": {
                   "medical_advancement_surgery_limit": ["Upto 25% SI", "Upto 50% SI", "Upto SI"]}}
-=======
+
+
 def output_template_unmatched(incl_headings=False):
     output = {
         "policy_details": {
@@ -275,8 +265,6 @@ def output_template_unmatched(incl_headings=False):
         output["pre_existing_disease_and_specified_disease"] = {
             "pre_existing_disease_and_specified_disease_waiting_period": ""
         }
->>>>>>> 2772c60 (Initial commit for New India parser)
-
     return output
 
 
@@ -626,8 +614,6 @@ def text_space_cleaner(text):
     text = re.sub(r'-\n', '', text)
     text = re.sub(r'\n', ' ', text)
     return text
-<<<<<<< HEAD
-=======
 
 def reliance_output_template():
     """Template for Reliance insurance policy output"""
@@ -677,5 +663,3 @@ def output_template_excel():
             "policy_co_payment_factor": ""
         }
     }
-
->>>>>>> 2772c60 (Initial commit for New India parser)
