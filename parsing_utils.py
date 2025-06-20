@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from pdfminer.high_level import extract_pages
 from pdfminer.layout import LTTextContainer
 from typing import Dict
@@ -9,6 +8,12 @@ import json
 # from prompt_utils import prompt_field
 from utils import text_space_cleaner
 import fitz
+import pdfplumber
+import re
+from prompt_utils import prompt_field_unmatched_policy
+from openai import OpenAI
+from dotenv import load_dotenv
+import os
 
 
 def get_headings():
@@ -244,24 +249,6 @@ def all_loader(file_path):
     return pdf_docs
 
 
-if __name__ == '__main__':
-    main()
-=======
-import pdfplumber
-import re
-from prompt_utils import prompt_field_unmatched_policy
-from openai import OpenAI
-from dotenv import load_dotenv
-import os
-
-load_dotenv(dotenv_path='api.env')  # 👈 Explicitly load api.env
-api_key = os.getenv("OPENAI_API_KEY")
-
-from openai import OpenAI
-client = OpenAI(api_key=api_key)
-
-
-
 def extract_policy_text(pdf_path: str, max_pages: int = 3) -> str:
     """
     Extracts and cleans the first few pages of an insurance policy PDF.
@@ -307,4 +294,9 @@ def parse_reliance_pdf(pdf_path: str) -> dict:
     )
 
     return json_output
->>>>>>> 2772c60 (Initial commit for New India parser)
+
+
+if __name__ == '__main__':
+    load_dotenv(dotenv_path='api.env')  # 👈 Explicitly load api.env
+    api_key = os.getenv("OPENAI_API_KEY")
+    main()
