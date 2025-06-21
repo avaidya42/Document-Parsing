@@ -172,7 +172,7 @@ def table_loader_multiple(file_path, start=None, stop=None):
                     continue
                 else:
                     start = ""
-            print(page_text, "\n=====\n")
+            # print(page_text, "\n=====\n")
             tabs = page.find_tables()
             for tab in tabs:
                 dfs.append(tab.to_pandas())
