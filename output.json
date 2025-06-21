@@ -1,19 +1,19 @@
 {
     "day_care_treatment": {
-        "day_care_treatment": ""
+        "day_care_treatment": "Covered upto Sum Insured"
     },
     "organ_donor_expenses": {
         "organ_donor_expenses": ""
     },
     "pre_and_post_natal_expenses_IPD": {
-        "expenses_limit_IPD": "5000",
+        "expenses_limit_IPD": "",
         "applicability": ""
     },
     "maternity_expenses": {
-        "no_of_deliveries": "2},",
-        "limit_normal_delivery": "25000",
-        "limit_C_Section": "25000",
-        "waiting_period": "9 months"
+        "no_of_deliveries": "2 pregnancies or terminations.",
+        "limit_normal_delivery": "",
+        "limit_C_Section": "",
+        "waiting_period": ""
     },
     "pre_and_post_natal_expenses_OPD": {
         "expenses_limit_OPD": ""
@@ -25,7 +25,7 @@
     },
     "refractive_error_correction_expenses": {
         "si_limit": "",
-        "eye_power": 7.5
+        "eye_power": 0.0
     },
     "hiv_anti_retroviral_therapy": {
         "hiv_anti_retroviral_therapy": ""
@@ -59,38 +59,38 @@
     },
     "co_pay": {
         "policy_co_payment_factor": "50%",
-        "co_pay_type": "femato laser surgery, bio-absorbable Stent, Toric lens, Multi focal Lens"
+        "co_pay_type": "Cyberknife/ Robotic surgery, Bio-absorbable stent, FAMETO Lasik surgery, Toric lenses, KT laser Prostate, Stem cell transplant, Cochlear Implant Treatment"
     },
     "room_rent": {
-        "room_rent_limit": "1% of Sum Insured per day",
+        "room_rent_limit": "Actuals & ICU Actuals",
         "options_for_deductions": ""
     },
     "road_ambulance": {
-        "road_ambulance_limit": "1000"
+        "road_ambulance_limit": "INR 2000 per hospitalization"
     },
     "ayush_treatment": {
-        "ayush_treatment_limit": ""
+        "ayush_treatment_limit": "Not Covered"
     },
     "medical_advancement_surgery": {
-        "medical_advancement_surgery_limit": "50% of the Sum Insured"
+        "medical_advancement_surgery_limit": ""
     },
     "pre_hospitalization": {
-        "pre_hospitalization_period": "30 days"
+        "pre_hospitalization_period": "Covered upto Sum Insured for 60 days"
     },
     "post_hospitalization": {
-        "post_hospitalization_period": "60 days"
+        "post_hospitalization_period": "Covered upto Sum Insured for 90 days"
     },
     "pre_existing_disease_and_specified_disease": {
-        "pre_existing_disease_and_specified_disease_waiting_period": ""
+        "pre_existing_disease_and_specified_disease_waiting_period": "Not Applicable"
     },
     "extra": {
-        "policy_number": "83188373",
-        "name_policyholder": "DINERO SOFTWARE PRIVATE LIMITED",
-        "cover_type": "Main Floater",
-        "policy_start_date": "00:00 hrs 29-Apr-2024",
-        "policy_end_date": "Midnight 28-Apr-2025",
-        "primary_insured_members": "43",
-        "total_sum_insured": "` 17,200,021",
+        "policy_number": "50754100202400",
+        "name_policyholder": "",
+        "cover_type": "",
+        "policy_start_date": "01/05/2024 12:00 AM",
+        "policy_end_date": "30/04/2025 11:59 PM",
+        "primary_insured_members": "",
+        "total_sum_insured": "8150000.00",
         "attack_cover_limit": "",
         "max_limit": "",
         "change_policy": "",
@@ -101,7 +101,7 @@
         "reasonable_and_customary_clause": "",
         "non_selection_clause": "",
         "doctor_fee_exclusion": "",
-        "air_ambulance_limit": "",
+        "air_ambulance_limit": "Not Covered per hospitalization",
         "lasik_coverage_limit": "",
         "psychiatric_ailment_limit": ""
     }

@@ -8,7 +8,7 @@ import pandas as pd
 def extract_tables_from_pdf(pdf_path):
     tables = []
     with fitz.open(pdf_path) as doc:
-        for page_num, page in enumerate(doc, 1):
+        for page_num, page in enumerate(doc, 1):  # limiting extraction to first 5 pages
             found_tables = page.find_tables()
             for tab in found_tables.tables:
                 df = tab.to_pandas()
@@ -109,6 +109,8 @@ def final_parser_carehealth(pdf_path):
 
     # extracting unstructured text and parse with LLM
     unstructured_text = extract_unstructured_text_carehealth(pdf_path)
+    print(f"\n Total Characters: {len(unstructured_text)}")
+    print(f" Approx. Tokens (estimate): {len(unstructured_text) // 4}")
     llm_output = get_llm_output(unstructured_text)
     
     # unpack llm_output dict and store in final
