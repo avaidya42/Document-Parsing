@@ -82,10 +82,88 @@ def prompt_field(data, maternity_expense, room_restrictions):
     response = get_completion_from_messages(messages)
     return response
 
-def prompt_field_unmatched_policy(data, maternity_expense, room_restrictions, insurer="reliance"):
-    from utils import output_template_unmatched
-    import re
-    from openai_helper import get_completion_from_messages
+
+def prompt_field_unmatched_policy(data, maternity_expense, room_restrictions):
+    template = output_template_unmatched()
+    # if "refer claim condition" not in room_restrictions.lower():
+    if len(room_restrictions) > 2:
+        room_restrictions = f"Use this information to answer: {room_restrictions}"
+    messages = [
+        {
+            'role': 'system',
+            'content': f'''You are an AI data extraction assistant specialized in identifying and extracting specific \
+            data fields from unstructured text. The user will provide you with text which is scraped from an insurance \
+            policy document by Bajaj. Your \
+            task is to extract relevant fields and output them in the form of a JSON. The output should just be the json \
+            with no prefix or suffix, and the format of the output should be \n
+            --- 
+            {template}
+            ---
+            Your task is to find the appropriate values for the keys in the dictionary, which are left as empty \
+            python strings. If the data corresponding to the value of a key \
+            is not present in the document, \
+            set the value to an empty string. Do not delete any keys, add new keys or change the structure of the output.
+
+            Wherever talking about limits, sum insured, or numbers, only give the number. Do not fill with confirmation \
+            or negation. Leave the sum insured as an empty string if the policy is not covered.
+
+            Keep the following things in mind, for different fields in the output:
+
+            1. All values related to Corporate Buffer must be taken from the corresponding section, if this section
+            is missing from the data, then do not fill in the values for corporate_buffer['sum_insured']. If present, the \
+            type_of_ailment and type_of_coverage may also mentioned in this section.
+
+            2. All values related to pre and post_natal_expenses_IPD and pre_and_post_natal_expenses_OPD must be taken \
+            from the pre and post natal section or other conditions section of the data. The applicability may also be \
+            mentioned here. The max liability on maternity expenses is {maternity_expense}. If OPD is not covered \
+            set expense_limit_OPD to an empty string.
+
+            3. Surgery limit for medical_advancement_surgery may be mentioned as Modern Treatment Methods and Advancement \
+            in Technologies under Other Conditions or for Cyberknife treatment, Stem Cell Transplantation, Cochlear Implant
+
+            4. For home nursing benefit, keep in mind to convert allowance amount to per week (times 7) if given as per day and \
+            to convert duration to number of weeks (divided by 7, return nearest integer) if given in number of days
+
+            5. refractive_error_correction_expenses are mentioned under Other Conditions (sometimes under pre and post \
+            natal) and may sometimes be labeled as lasik. If present, eye_power may be mentioned in dioptres 
+
+            6. Room Restrictions: {room_restrictions}. If asked to refer to claim condition, they will be under \
+            Room Rent Restriction. room_rent_limit may be in the form of a number or a percentage of SI, if it is\
+            different for general, and ICU, mention the entire condition under room_rent_limit. 
+            While filling options_for_deductions \
+            as 'Proportionate Deduction', 'Capping on Room Charges only', only consider the normal case, do not consider \
+            the case for ICU hospitalization or cases where there is no \
+            differential billing. Do not confuse with Ambulance limit.
+
+            7. Do not confuse other sub limits for OPD limit
+
+            8. ayush_treatment_limit may be mentioned under Ayurveda, Yoga & Naturopathy, Unani, Siddha, Sowa Rigpa \
+            and Homoeopathy
+
+            9. Under co_pay, policy_co_payment_factor may be mentioned as a percentage, and can include conditions, so output the \
+            appropriate value under this key. Whereas co_pay_type \
+            refers to types of claims and hospitals
+
+            Do not make guesses, only take data from the document from the \
+            relevant sections as present in the template.
+
+            '''
+        },
+        {
+            'role': 'user',
+            'content': f'Policy Document: \n {data}'
+        }
+    ]
+    # print(data)
+    response = get_completion_from_messages(messages)
+    json_str = re.search(r'\{.*\}', response, re.DOTALL).group(0)
+    return json_str
+
+
+def prompt_field_unmatched_policy_new(data, maternity_expense, room_restrictions, insurer="reliance"):
+    # from utils import output_template_unmatched
+    # import re
+    # from openai_helper import get_completion_from_messages
  # change this if needed
 
     template = output_template_unmatched()
