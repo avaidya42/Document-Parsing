@@ -162,28 +162,27 @@ def table_loader(file_path, pdf_docs):
     return pdf_docs
 
 
-def table_loader_multiple(file_path, pdf_docs, start=None, stop=None):
+def table_loader_multiple(file_path, start=None, stop=None):
+    dfs = []
     with fitz.open(file_path) as doc:
         for page in doc:
             if start:
                 page_text = page.get_text()
                 if start not in page_text:
-                    start = ""
                     continue
-            # print(page_text)
+                else:
+                    start = ""
+            print(page_text, "\n=====\n")
             tabs = page.find_tables()
             for tab in tabs:
-                print(tab.to_pandas(), "\n\n\n")
-                pdf_docs += (tab.to_pandas()).to_string(index=False, na_rep='') + '\n\n'
-
+                dfs.append(tab.to_pandas())
             if stop and start:
                 if stop in page_text:
                     break
             elif stop:
                 if stop in page.get_text():
                     break
-
-    return pdf_docs
+    return dfs
 
 
 def table_loader_first(file_path):
