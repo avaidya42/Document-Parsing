@@ -8,7 +8,7 @@ import gc
 from dotenv import load_dotenv
 import os
 
-load_dotenv(dotenv_path='.env')  # 👈 Explicitly load api.env
+load_dotenv(dotenv_path='.env') 
 api_key = os.getenv("OPENAI_API_KEY")
 
 from openai import OpenAI

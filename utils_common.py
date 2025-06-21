@@ -61,12 +61,6 @@ def get_completion_qwen(messages, model, tokenizer):
     return summary
 
 def output_template(incl_headings=False):
-    heading_outputs = {"Policy No" : {"policy_number":""},
-                       "name_of_policy_holder":{"name_of_policy_holder":""},
-                       "policy_period":{"policy_period_start_date":"","policy_period_end_date":""},
-                       "primary_imsured_members":{"policy_insured_numbers":""},
-                       }
-    # these are added to the final result without the help of a llm
 
     output = {"day_care_treatment": {"day_care_treatment": ""},
               "organ_donor_expenses": {"organ_donor_expenses": ""},
@@ -96,7 +90,7 @@ def output_template(incl_headings=False):
               "ayush_treatment": {"ayush_treatment_limit": ""},
               "medical_advancement_surgery": {"medical_advancement_surgery_limit": ""}}
     if incl_headings:
-        return output | heading_outputs
+        return output
     return output
 
 

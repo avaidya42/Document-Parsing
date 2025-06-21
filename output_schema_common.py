@@ -130,9 +130,11 @@ class Output(BaseModel):
 class Extra(BaseModel):
     policy_number: str
     name_policyholder: str
+    cover_type: str
     policy_start_date: str
     policy_end_date: str
     primary_insured_members: str
+    total_sum_insured: str
     attack_cover_limit: str
     max_limit: str
     change_policy: str
