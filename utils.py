@@ -208,64 +208,64 @@ def output_template_excel():
                   "medical_advancement_surgery_limit": ["Upto 25% SI", "Upto 50% SI", "Upto SI"]}}
 
 
-def output_template_unmatched(incl_headings=False):
-    output = {
-        "policy_details": {
-            "policy_number": "",
-            "policy_issue_date": "",
-            "policy_expiry_date": "",
-            "sum_insured": ""
-        },
-        "coverage_details": {
-            "pre_hospitalization_period": "",
-            "post_hospitalization_period": ""
-        },
-        "maternity_benefits": {
-            "limit_normal_delivery": "",
-            "limit_c_section": "",
-            "no_of_deliveries": "",
-            "waiting_period": "",
-            "pre_post_natal_IPD_limit": "",
-            "pre_post_natal_OPD_limit": ""
-        },
-        "room_rent": {
-            "general_limit": "",
-            "icu_limit": "",
-            "deduction_type": ""
-        },
-        "co_pay": {
-            "co_payment_percentage": "",
-            "co_payment_type": ""
-        },
-        "day_care_treatment": {"day_care_treatment": ""},
-        "organ_donor_expenses": {"organ_donor_expenses": ""},
-        "pre_and_post_natal_expenses_IPD": {"expenses_limit_IPD": "", "applicability": ""},
-        "pre_and_post_natal_expenses_OPD": {"expenses_limit_OPD": ""},
-        "corporate_buffer": {
-            "sum_insured": "",
-            "type_of_ailment": "",
-            "type_of_coverage": ""
-        },
-        "refractive_error_correction_expenses": {"si_limit": "", "eye_power": ""},
-        "hiv_anti_retroviral_therapy": {"hiv_anti_retroviral_therapy": ""},
-        "home_nursing_benefit": {"per_week_benefit": "", "number_of_weeks": ""},
-        "preventive_health_check_up": {"benefit_limit": "", "clinic_options": ""},
-        "opd_expenses": {"benefit_limit": ""},
-        "physiotherapy_on_opd_basis": {"benefit_limit": "", "coverage_type": ""},
-        "dental_care": {"benefit_limit": ""},
-        "mental_illness": {"benefit_limit": ""},
-        "vision_expenses_cover": {"benefit_limit": ""},
-        "obesity_control_coverage": {"obesity_control_coverage": ""},
-        "road_ambulance": {"road_ambulance_limit": ""},
-        "ayush_treatment": {"ayush_treatment_limit": ""},
-        "medical_advancement_surgery": {"medical_advancement_surgery_limit": ""}
-    }
-
-    if incl_headings:
-        output["pre_existing_disease_and_specified_disease"] = {
-            "pre_existing_disease_and_specified_disease_waiting_period": ""
-        }
-    return output
+# def output_template_unmatched(incl_headings=False):
+#     output = {
+#         "policy_details": {
+#             "policy_number": "",
+#             "policy_issue_date": "",
+#             "policy_expiry_date": "",
+#             "sum_insured": ""
+#         },
+#         "coverage_details": {
+#             "pre_hospitalization_period": "",
+#             "post_hospitalization_period": ""
+#         },
+#         "maternity_benefits": {
+#             "limit_normal_delivery": "",
+#             "limit_c_section": "",
+#             "no_of_deliveries": "",
+#             "waiting_period": "",
+#             "pre_post_natal_IPD_limit": "",
+#             "pre_post_natal_OPD_limit": ""
+#         },
+#         "room_rent": {
+#             "general_limit": "",
+#             "icu_limit": "",
+#             "deduction_type": ""
+#         },
+#         "co_pay": {
+#             "co_payment_percentage": "",
+#             "co_payment_type": ""
+#         },
+#         "day_care_treatment": {"day_care_treatment": ""},
+#         "organ_donor_expenses": {"organ_donor_expenses": ""},
+#         "pre_and_post_natal_expenses_IPD": {"expenses_limit_IPD": "", "applicability": ""},
+#         "pre_and_post_natal_expenses_OPD": {"expenses_limit_OPD": ""},
+#         "corporate_buffer": {
+#             "sum_insured": "",
+#             "type_of_ailment": "",
+#             "type_of_coverage": ""
+#         },
+#         "refractive_error_correction_expenses": {"si_limit": "", "eye_power": ""},
+#         "hiv_anti_retroviral_therapy": {"hiv_anti_retroviral_therapy": ""},
+#         "home_nursing_benefit": {"per_week_benefit": "", "number_of_weeks": ""},
+#         "preventive_health_check_up": {"benefit_limit": "", "clinic_options": ""},
+#         "opd_expenses": {"benefit_limit": ""},
+#         "physiotherapy_on_opd_basis": {"benefit_limit": "", "coverage_type": ""},
+#         "dental_care": {"benefit_limit": ""},
+#         "mental_illness": {"benefit_limit": ""},
+#         "vision_expenses_cover": {"benefit_limit": ""},
+#         "obesity_control_coverage": {"obesity_control_coverage": ""},
+#         "road_ambulance": {"road_ambulance_limit": ""},
+#         "ayush_treatment": {"ayush_treatment_limit": ""},
+#         "medical_advancement_surgery": {"medical_advancement_surgery_limit": ""}
+#     }
+#
+#     if incl_headings:
+#         output["pre_existing_disease_and_specified_disease"] = {
+#             "pre_existing_disease_and_specified_disease_waiting_period": ""
+#         }
+#     return output
 
 
 def sample_json():
