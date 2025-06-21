@@ -1,31 +1,31 @@
 {
     "day_care_treatment": {
-        "day_care_treatment": "Covered up to 100 % of SI"
+        "day_care_treatment": "Covered upto Sum Insured"
     },
     "organ_donor_expenses": {
-        "organ_donor_expenses": "Not Covered"
+        "organ_donor_expenses": ""
     },
     "pre_and_post_natal_expenses_IPD": {
         "expenses_limit_IPD": "",
         "applicability": ""
     },
     "maternity_expenses": {
-        "no_of_deliveries": "2",
-        "limit_normal_delivery": "35000",
-        "limit_C_Section": "50000",
-        "waiting_period": "Not Applicable"
+        "no_of_deliveries": "2 pregnancies or terminations.",
+        "limit_normal_delivery": "",
+        "limit_C_Section": "",
+        "waiting_period": ""
     },
     "pre_and_post_natal_expenses_OPD": {
-        "expenses_limit_OPD": "Not Covered"
+        "expenses_limit_OPD": ""
     },
     "corporate_buffer": {
-        "sum_insured": "Not applicable",
+        "sum_insured": "",
         "type_of_ailment": "",
         "type_of_coverage": ""
     },
     "refractive_error_correction_expenses": {
-        "si_limit": "Covered up to 100 % of SI when power of the lens is more than+/-6.5",
-        "eye_power": 6.5
+        "si_limit": "",
+        "eye_power": 0.0
     },
     "hiv_anti_retroviral_therapy": {
         "hiv_anti_retroviral_therapy": ""
@@ -39,17 +39,17 @@
         "clinic_options": ""
     },
     "opd_expenses": {
-        "benefit_limit": "Not Covered"
+        "benefit_limit": ""
     },
     "physiotherapy_on_opd_basis": {
         "benefit_limit": "",
         "coverage_type": ""
     },
     "dental_care": {
-        "benefit_limit": "Covered upto SI in case of accidental Hospitalization only"
+        "benefit_limit": ""
     },
     "mental_illness": {
-        "benefit_limit": "Covered up to 100 % of SI or INR 30000 whichever is lower"
+        "benefit_limit": ""
     },
     "vision_expenses_cover": {
         "benefit_limit": ""
@@ -58,37 +58,39 @@
         "obesity_control_coverage": ""
     },
     "co_pay": {
-        "policy_co_payment_factor": "No Co-pay",
-        "co_pay_type": "Applicable on each non-OPD claim excluding capped ailments"
+        "policy_co_payment_factor": "50%",
+        "co_pay_type": "Cyberknife/ Robotic surgery, Bio-absorbable stent, FAMETO Lasik surgery, Toric lenses, KT laser Prostate, Stem cell transplant, Cochlear Implant Treatment"
     },
     "room_rent": {
-        "room_rent_limit": "2.00 % of SI for Normal Room, 4.00 % of SI for ICU Room",
-        "options_for_deductions": "Proportionate Deduction clause applicable"
+        "room_rent_limit": "Actuals & ICU Actuals",
+        "options_for_deductions": ""
     },
     "road_ambulance": {
-        "road_ambulance_limit": "Covered upto 1 % of Sum Insured upto a maximum of INR 1000 per case"
+        "road_ambulance_limit": "INR 2000 per hospitalization"
     },
     "ayush_treatment": {
-        "ayush_treatment_limit": "Covered up to 100 % of SI"
+        "ayush_treatment_limit": "Not Covered"
     },
     "medical_advancement_surgery": {
-        "medical_advancement_surgery_limit": "Covered up to 50 % of SI"
+        "medical_advancement_surgery_limit": ""
     },
     "pre_hospitalization": {
-        "pre_hospitalization_period": "Covered up to 60 days"
+        "pre_hospitalization_period": "Covered upto Sum Insured for 60 days"
     },
     "post_hospitalization": {
-        "post_hospitalization_period": "Covered up to 90 days"
+        "post_hospitalization_period": "Covered upto Sum Insured for 90 days"
     },
     "pre_existing_disease_and_specified_disease": {
         "pre_existing_disease_and_specified_disease_waiting_period": "Not Applicable"
     },
     "extra": {
-        "policy_number": "D146226512",
-        "name_policyholder": "MELZER CHEMICALS PRIVATE LIMITED",
-        "policy_start_date": "01-May-2024",
-        "policy_end_date": "30-Apr-2025",
-        "primary_insured_members": "476",
+        "policy_number": "50754100202400",
+        "name_policyholder": "",
+        "cover_type": "",
+        "policy_start_date": "01/05/2024 12:00 AM",
+        "policy_end_date": "30/04/2025 11:59 PM",
+        "primary_insured_members": "",
+        "total_sum_insured": "8150000.00",
         "attack_cover_limit": "",
         "max_limit": "",
         "change_policy": "",
@@ -99,9 +101,8 @@
         "reasonable_and_customary_clause": "",
         "non_selection_clause": "",
         "doctor_fee_exclusion": "",
-        "air_ambulance_limit": "Covered up to INR 100000",
+        "air_ambulance_limit": "Not Covered per hospitalization",
         "lasik_coverage_limit": "",
         "psychiatric_ailment_limit": ""
-    },
-    "other_covers": {}
+    }
 }
