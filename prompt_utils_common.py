@@ -73,7 +73,8 @@ def generate_llm_prompt(unstructured_text: str):
             8. ayush_treatment_limit may be mentioned under Ayurveda, Yoga & Naturopathy, Unani, Siddha, Sowa Rigpa \
             and Homoeopathy. If mentioned Like - x% of sum insured , return whole value
 
-            9. If there is no mention of co_pay or any of its sub keys, set them to empty lists
+            9. If there is no mention of co_pay or any of its sub keys, set them to empty lists. If there are types of co-pay mention \
+            them in the reult.
 
             Do not make guesses, only take data from the document from the \
             relevant sections as present in the template.
