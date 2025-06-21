@@ -148,65 +148,41 @@ def main():
     # get_tables(pdf_path)
 
 
-# def pdf_parser(pdf_path):
-#     actual_headings = get_headings()
-#     text_with_coords = extract_text_with_coordinates(pdf_path)
-#     unstructured_text = ""
-#     con = False
-#     con2 = False
-#     for i in range(max(text_with_coords.keys()) + 1):
-#         for item in text_with_coords[i]:
-#             if not con:
-#                 if "claim conditions" == item['text'].lower():
-#                     con = True
-#                     unstructured_text += item['text'] + "\n"
-#             else:
-#                 if "quote disclaim" in item['text'].lower():
-#                     # con2 = True
-#                     # break
-#                     pass
-#                 unstructured_text += item['text'] + "\n"
-#         if con2:
-#             break
-#
-#     heading_coords = find_heading_coordinates(text_with_coords, actual_headings)
-#     extracted_data = extract_text_near_heading(text_with_coords, actual_headings, heading_coords)
-#
-#     result = {}
-#     for heading, data in extracted_data.items():
-#         result[heading] = data
-#
-#     maternity_expense = result["Max liability on maternity exp"]
-#     room_restrictions = result["Room Restrictions"]
-#     llm_out = eval(prompt_field(unstructured_text, maternity_expense, room_restrictions))
-#
-#     llm_out["maternity_expenses"]["limit_normal_delivery"] = result["Max for normal delivery"]
-#     llm_out["maternity_expenses"]["limit_c_section"] = result["Max for LSCS"]
-#     if "not" in result["9 Months waiting period"].lower():
-#         llm_out["maternity_expenses"]["waiting_period"] = "No waiting period"
-#     else:
-#         llm_out["maternity_expenses"]["waiting_period"] = "9 Months waiting period"
-#     llm_out["pre_hospitalization"] = {"pre_hospitalization_period": result["Pre Hospitalization Period[Days]"]}
-#     llm_out["post_hospitalization"] = {"post_hospitalization_period": result["Post Hospitalization Period[Days]"]}
-#
-#     llm_out = llm_out | {"headings": result}
-#     output(llm_out)
-#     with open('llm_result.json', 'w') as f3:
-#         json.dump(llm_out, f3, indent=4)
-#     return llm_out
-
-
 def table_loader(file_path, pdf_docs):
-    doc = fitz.open(file_path)
-    counter = 0
-    for page in doc:
-        tabs = page.find_tables()
-        for tab in tabs:
-            # print(tab.to_pandas())
-            pdf_docs += (tab.to_pandas()).to_string(index=False, na_rep='') + '\n\n'
-        counter += 1
-        if counter >= 5:
-            break
+    with fitz.open(file_path) as doc:
+        counter = 0
+        for page in doc:
+            tabs = page.find_tables()
+            for tab in tabs:
+                # print(tab.to_pandas(), "\n\n\n")
+                pdf_docs += (tab.to_pandas()).to_string(index=False, na_rep='') + '\n\n'
+            counter += 1
+            if counter >= 5:
+                break
+    return pdf_docs
+
+
+def table_loader_multiple(file_path, pdf_docs, start=None, stop=None):
+    with fitz.open(file_path) as doc:
+        for page in doc:
+            if start:
+                page_text = page.get_text()
+                if start not in page_text:
+                    start = ""
+                    continue
+            # print(page_text)
+            tabs = page.find_tables()
+            for tab in tabs:
+                print(tab.to_pandas(), "\n\n\n")
+                pdf_docs += (tab.to_pandas()).to_string(index=False, na_rep='') + '\n\n'
+
+            if stop and start:
+                if stop in page_text:
+                    break
+            elif stop:
+                if stop in page.get_text():
+                    break
+
     return pdf_docs
 
 
