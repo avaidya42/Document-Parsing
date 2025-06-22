@@ -1,6 +1,6 @@
 {
     "day_care_treatment": {
-        "day_care_treatment": "Covered upto Sum Insured"
+        "day_care_treatment": ""
     },
     "organ_donor_expenses": {
         "organ_donor_expenses": ""
@@ -10,7 +10,7 @@
         "applicability": ""
     },
     "maternity_expenses": {
-        "no_of_deliveries": "2 pregnancies or terminations.",
+        "no_of_deliveries": "",
         "limit_normal_delivery": "",
         "limit_C_Section": "",
         "waiting_period": ""
@@ -58,39 +58,39 @@
         "obesity_control_coverage": ""
     },
     "co_pay": {
-        "policy_co_payment_factor": "50%",
-        "co_pay_type": "Cyberknife/ Robotic surgery, Bio-absorbable stent, FAMETO Lasik surgery, Toric lenses, KT laser Prostate, Stem cell transplant, Cochlear Implant Treatment"
+        "policy_co_payment_factor": "",
+        "co_pay_type": ""
     },
     "room_rent": {
-        "room_rent_limit": "Actuals & ICU Actuals",
+        "room_rent_limit": "",
         "options_for_deductions": ""
     },
     "road_ambulance": {
-        "road_ambulance_limit": "INR 2000 per hospitalization"
+        "road_ambulance_limit": ""
     },
     "ayush_treatment": {
-        "ayush_treatment_limit": "Not Covered"
+        "ayush_treatment_limit": ""
     },
     "medical_advancement_surgery": {
         "medical_advancement_surgery_limit": ""
     },
     "pre_hospitalization": {
-        "pre_hospitalization_period": "Covered upto Sum Insured for 60 days"
+        "pre_hospitalization_period": ""
     },
     "post_hospitalization": {
-        "post_hospitalization_period": "Covered upto Sum Insured for 90 days"
+        "post_hospitalization_period": ""
     },
     "pre_existing_disease_and_specified_disease": {
-        "pre_existing_disease_and_specified_disease_waiting_period": "Not Applicable"
+        "pre_existing_disease_and_specified_disease_waiting_period": ""
     },
     "extra": {
-        "policy_number": "50754100202400",
-        "name_policyholder": "",
+        "policy_number": "00860600202401",
+        "name_policyholder": "Cambridge University Press & Assessment India Private Limited",
         "cover_type": "",
-        "policy_start_date": "01/05/2024 12:00 AM",
-        "policy_end_date": "30/04/2025 11:59 PM",
+        "policy_start_date": "01/06/2024 12:00:00 AM",
+        "policy_end_date": "31/05/2025 12:00:00 AM",
         "primary_insured_members": "",
-        "total_sum_insured": "8150000.00",
+        "total_sum_insured": "",
         "attack_cover_limit": "",
         "max_limit": "",
         "change_policy": "",
@@ -101,7 +101,7 @@
         "reasonable_and_customary_clause": "",
         "non_selection_clause": "",
         "doctor_fee_exclusion": "",
-        "air_ambulance_limit": "Not Covered per hospitalization",
+        "air_ambulance_limit": "",
         "lasik_coverage_limit": "",
         "psychiatric_ailment_limit": ""
     }

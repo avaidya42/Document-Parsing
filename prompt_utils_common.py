@@ -54,7 +54,7 @@ def generate_llm_prompt(unstructured_text: str):
             2. All values related to pre and post_natal_expenses_IPD and pre_and_post_natal_expenses_OPD must be taken \
             from the pre and post natal section or other conditions section of the data. The applicability may also be \
             mentioned here. The max liability on maternity expenses is maternity_expense. If OPD is not covered \
-            set expense_limit_OPD to an empty string.Do not mistake Pre and Post Hospitalization for pre and post_natal_expenses_IPD
+            set expense_limit_OPD to an empty string.
 
             3. Surgery limit for medical_advancement_surgery may be mentioned as Modern Treatment Methods and Advancement \
             in Technologies under Other Conditions
