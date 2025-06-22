@@ -6,26 +6,26 @@
         "organ_donor_expenses": ""
     },
     "pre_and_post_natal_expenses_IPD": {
-        "expenses_limit_IPD": "",
-        "applicability": ""
+        "expenses_limit_IPD": "Maximum limit : 75,000.00",
+        "applicability": "As per table - IPD basis"
     },
     "maternity_expenses": {
-        "no_of_deliveries": "",
-        "limit_normal_delivery": "",
-        "limit_C_Section": "",
-        "waiting_period": ""
+        "no_of_deliveries": "2 living births only.",
+        "limit_normal_delivery": "Maximum limit : 50,000.00",
+        "limit_C_Section": "75000",
+        "waiting_period": "9 months not applicable"
     },
     "pre_and_post_natal_expenses_OPD": {
         "expenses_limit_OPD": ""
     },
     "corporate_buffer": {
-        "sum_insured": "",
+        "sum_insured": "Maximum limit : 1,000,000.00 Per Family : 500,000.00",
         "type_of_ailment": "",
         "type_of_coverage": ""
     },
     "refractive_error_correction_expenses": {
         "si_limit": "",
-        "eye_power": 0.0
+        "eye_power": 7.5
     },
     "hiv_anti_retroviral_therapy": {
         "hiv_anti_retroviral_therapy": ""
@@ -35,8 +35,8 @@
         "number_of_weeks": ""
     },
     "preventive_health_check_up": {
-        "benefit_limit": "",
-        "clinic_options": ""
+        "benefit_limit": "7000",
+        "clinic_options": "17 employees"
     },
     "opd_expenses": {
         "benefit_limit": ""
@@ -49,7 +49,7 @@
         "benefit_limit": ""
     },
     "mental_illness": {
-        "benefit_limit": ""
+        "benefit_limit": "100000"
     },
     "vision_expenses_cover": {
         "benefit_limit": ""
@@ -58,39 +58,39 @@
         "obesity_control_coverage": ""
     },
     "co_pay": {
-        "policy_co_payment_factor": "",
-        "co_pay_type": ""
+        "policy_co_payment_factor": "Yes, Network copay : 0.0% & Non-Network copay :",
+        "co_pay_type": "Network / Non-network distinction"
     },
     "room_rent": {
         "room_rent_limit": "",
         "options_for_deductions": ""
     },
     "road_ambulance": {
-        "road_ambulance_limit": ""
+        "road_ambulance_limit": "Maximum limit : 2,000.00"
     },
     "ayush_treatment": {
-        "ayush_treatment_limit": ""
+        "ayush_treatment_limit": "25000"
     },
     "medical_advancement_surgery": {
-        "medical_advancement_surgery_limit": ""
+        "medical_advancement_surgery_limit": "50% of Sum Insured"
     },
     "pre_hospitalization": {
-        "pre_hospitalization_period": ""
+        "pre_hospitalization_period": "Yes 30.0 day(s)"
     },
     "post_hospitalization": {
-        "post_hospitalization_period": ""
+        "post_hospitalization_period": "Yes 60.0 day(s)"
     },
     "pre_existing_disease_and_specified_disease": {
-        "pre_existing_disease_and_specified_disease_waiting_period": ""
+        "pre_existing_disease_and_specified_disease_waiting_period": "waived"
     },
     "extra": {
-        "policy_number": "00860600202401",
-        "name_policyholder": "Cambridge University Press & Assessment India Private Limited",
+        "policy_number": "4101230500000082-01",
+        "name_policyholder": "",
         "cover_type": "",
-        "policy_start_date": "01/06/2024 12:00:00 AM",
-        "policy_end_date": "31/05/2025 12:00:00 AM",
-        "primary_insured_members": "",
-        "total_sum_insured": "",
+        "policy_start_date": "From 01-05-2024 (00:00:00 Hrs)",
+        "policy_end_date": "30-042025 (23:59:59 Hrs)",
+        "primary_insured_members": "271 Employees",
+        "total_sum_insured": "135,500,000.00",
         "attack_cover_limit": "",
         "max_limit": "",
         "change_policy": "",
@@ -103,6 +103,7 @@
         "doctor_fee_exclusion": "",
         "air_ambulance_limit": "",
         "lasik_coverage_limit": "",
-        "psychiatric_ailment_limit": ""
+        "psychiatric_ailment_limit": "",
+        "total_number_insured": "743 [Commencement of Policy]"
     }
 }

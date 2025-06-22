@@ -55,6 +55,7 @@ def generate_llm_prompt(unstructured_text: str):
             from the pre and post natal section or other conditions section of the data. The applicability may also be \
             mentioned here. The max liability on maternity expenses is maternity_expense. If OPD is not covered \
             set expense_limit_OPD to an empty string.
+            -If maternity waiting period is not mentioned/not applicable return - null
 
             3. Surgery limit for medical_advancement_surgery may be mentioned as Modern Treatment Methods and Advancement \
             in Technologies under Other Conditions
