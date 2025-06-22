@@ -1,10 +1,6 @@
 import json
-# from parsing_utils import extract_tables_from_pdf, extract_unstructured_text, parse_table_data
 from prompt_utils_common import get_llm_output
 from utils_common import rec_modifier, output_template
-
-
-
 
 import fitz  # PyMuPDF
 import unicodedata
@@ -13,29 +9,60 @@ from utils_common import text_space_cleaner
 import pandas as pd
 import logging
 
-# Suppress debug messages unless explicitly enabled
+def clean_output_dict(data):
+    if isinstance(data, dict):
+        return {k: clean_output_dict(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [clean_output_dict(item) for item in data]
+    elif isinstance(data, str):
+        cleaned = data.strip().strip('",}').strip()
+        cleaned = re.sub(r"\s{2,}", " ", cleaned)
+        return cleaned
+    else:
+        return data
+
+
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
 def extract_tables_from_pdf(pdf_path):
-    doc = fitz.open(pdf_path)
-    tables = []
-    for page in doc:
-        found_tables = page.find_tables()
-        for tab in found_tables.tables:
-            df = tab.to_pandas()
-            df = df.astype(str).map(text_space_cleaner)
-            tables.append(df)
-    return tables
+    with fitz.open(pdf_path) as doc:
+        tables = []
+        for page in doc:
+            found_tables = page.find_tables()
+            for tab in found_tables.tables:
+                df = tab.to_pandas()
+                df = df.astype(str).map(text_space_cleaner)
+                tables.append(df)
+        return tables
 
 
 def extract_unstructured_text(pdf_path):
-    text = ""
-    doc = fitz.open(pdf_path)
-    for page in doc:
-        text += page.get_text()
-    return text_space_cleaner(text)
+    extracted = []
+    capturing = False
+    start_keywords = ["stamp duty", "policy schedule", "policy coverage"]
+    stop_keywords = ["internal congenital ailments"]
+
+    with fitz.open(pdf_path) as doc:
+        for page in doc:
+            text = page.get_text("text")
+            lines = text.split("\n")
+            for line in lines:
+                cleaned_line = text_space_cleaner(line.lower())
+
+                if any(start in cleaned_line for start in start_keywords):
+                    capturing = True
+
+                if capturing:
+                    extracted.append(line)
+
+                if any(stop in cleaned_line for stop in stop_keywords):
+                    capturing = False
+
+    filtered_text = text_space_cleaner(" ".join(extracted))
+    return filtered_text
+
 
 
 def normalize_key(key: str) -> str:
@@ -93,7 +120,18 @@ def parse_digit_pdf(pdf_path):
     tables = extract_tables_from_pdf(pdf_path)
     structured_data = parse_table_data(tables)
     unstructured_text = extract_unstructured_text(pdf_path)
-    llm_output = get_llm_output(unstructured_text)
+
+    print("\n📝 Unstructured Text Sent to LLM (First 50 lines):")
+    for i, line in enumerate(unstructured_text.splitlines()):
+        if i >= 50:
+            print("... (truncated)")
+            break
+        print(f"{i+1:02d}: {line}")
+    
+    print(f"\n🔢 Total Characters: {len(unstructured_text)}")
+    print(f"🧠 Approx. Tokens (estimate): {len(unstructured_text) // 4}")
+
+    llm_output = clean_output_dict(get_llm_output(unstructured_text))
 
     final = output_template()
 
@@ -107,7 +145,6 @@ def parse_digit_pdf(pdf_path):
         elif isinstance(values, dict):
             final[section].update(values)
 
-    # Step 2: Maternity
     maternity = llm_output.get("maternity", {})
     if maternity:
         final["maternity_expenses"]["limit_normal_delivery"] = maternity.get("normal_delivery_metro", "")
@@ -128,12 +165,12 @@ def parse_digit_pdf(pdf_path):
             "maternity_eligibility": maternity.get("maternity_eligibility", "")
         }
 
-    # Step 3: Day care treatment
+    
     day_care = llm_output.get("day_care", {})
     if day_care:
         final["day_care_treatment"]["day_care_treatment"] = day_care.get("covered", "Not Applicable")
 
-    # Step 4: Modern treatments
+   
     modern = llm_output.get("modern_treatment", {})
     if modern:
         if "modern_treatment" not in final:
@@ -142,26 +179,18 @@ def parse_digit_pdf(pdf_path):
         if any("50%" in str(v) for v in modern.values()):
             final["medical_advancement_surgery"]["medical_advancement_surgery_limit"] = "Covered up to 50 % of SI."
 
-    # Step 5: LASIK logic from "other_covers"
+    
     other = llm_output.get("other_covers", {})
     lasik = other.get("lasik", "")
     if "+/-" in lasik or "lens" in lasik.lower():
         final["refractive_error_correction_expenses"]["eye_power"] = "7"
         final["refractive_error_correction_expenses"]["si_limit"] = lasik
 
-    # Step 6: Other Covers: Terrorism
+    
     if "other_covers" not in final:
         final["other_covers"] = {}
     if "terrorism_cover" in other and "cover" in other["terrorism_cover"].lower():
         final["other_covers"]["terrorism_cover"] = "Covered"
 
-    # # Step 7: Merge structured table data
-    # final["policy_info"].update(structured_data)
-
-    # Step 8: Clean unwanted fields from structured mapping
-    # for k in ["start_date", "end_date", "master_policy_no"]:
-    #     final["policy_info"].pop(k, None)
-
-    # Step 9: Normalize final output
     rec_modifier(final)
     return final

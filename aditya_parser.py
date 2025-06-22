@@ -9,26 +9,49 @@ from utils_common import text_space_cleaner
 import pandas as pd
 
 def extract_tables_from_pdf(pdf_path):
-    doc = fitz.open(pdf_path)
     tables = []
-    for page in doc:
-        found_tables = page.find_tables()
-        for tab in found_tables.tables:
-            df = tab.to_pandas()
-            df = df.astype(str).applymap(text_space_cleaner)
-            tables.append(df)
+    with fitz.open(pdf_path) as doc:
+        for page in doc:
+            found_tables = page.find_tables()
+            for tab in found_tables.tables:
+                df = tab.to_pandas()
+                df = df.astype(str).applymap(text_space_cleaner)
+                tables.append(df)
     return tables
 
 def extract_unstructured_text(pdf_path):
-    text = ""
-    doc = fitz.open(pdf_path)
-    for page in doc:
-        text += page.get_text("text")  # alternative rendering mode
+    extracted = []
+    capturing = False
+    start_keywords = ["stamp duty", "policy schedule", "policy coverage"]
+    stop_keywords = [
+    "internal congenital ailments covered",
+    "lucentis restricted",
+    "functional endoscopic sinus surgery",
+    "disease/procedure limit",
+    "riders"
+    ]
 
 
-    text = text_space_cleaner(text)
-    print("\n📃 Extracted Text Sample:\n", text[:1000])  # Add this line to debug
-    return text
+    with fitz.open(pdf_path) as doc:
+        for page in doc:
+            text = page.get_text("text")
+            lines = text.split("\n")
+            for line in lines:
+                cleaned_line = text_space_cleaner(line.lower())
+
+                if any(start in cleaned_line for start in start_keywords):
+                    capturing = True
+
+                if capturing:
+                    extracted.append(line)
+
+                if any(stop in cleaned_line for stop in stop_keywords):
+                    capturing = False
+
+    filtered_text = text_space_cleaner(" ".join(extracted))
+    print("\n📃 Filtered Text Sample:\n", filtered_text[:1000]) 
+    return filtered_text
+
 
 
 def normalize_key(key: str) -> str:
@@ -41,8 +64,6 @@ def normalize_key(key: str) -> str:
 
 def parse_table_data(tables):
     extracted_data = {}
-
-    # Support for both GHI and GPA
     field_mapping = {
         "policy no": "policy_no",
         "policy number": "policy_no",
@@ -97,6 +118,17 @@ def parse_aditya(pdf_path):
     tables = extract_tables_from_pdf(pdf_path)
     structured_data = parse_table_data(tables)
     unstructured_text = extract_unstructured_text(pdf_path)
+
+    print("\n📝 Unstructured Text Sent to LLM (First 50 lines):")
+    for i, line in enumerate(unstructured_text.splitlines()):
+        if i >= 50:
+            print("... (truncated)")
+            break
+        print(f"{i+1:02d}: {line}")
+    
+    print(f"\n🔢 Total Characters: {len(unstructured_text)}")
+    print(f"🧠 Approx. Tokens (estimate): {len(unstructured_text) // 4}")
+
     llm_output = get_llm_output(unstructured_text)
 
     final = remap_keys(llm_output)
