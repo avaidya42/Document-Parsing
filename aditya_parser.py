@@ -1,4 +1,4 @@
-from prompt_utils_common import get_llm_output
+from prompt_utils_common import get_llm_output_amogh
 from utils_common import rec_modifier, remap_keys
 
 
@@ -65,7 +65,7 @@ def normalize_key(key: str) -> str:
 def parse_table_data(tables):
     extracted_data = {}
     field_mapping = {
-        "policy no": "policy_no",
+        # "policy no": "policy_no",
         "policy number": "policy_no",
         "policyholder name": "policyholder_name",
         "policyholder": "policyholder_name",
@@ -78,9 +78,9 @@ def parse_table_data(tables):
         "policy issued date & time": "issued_date",
         "issuing office": "issuing_office",
         "policy servicing office": "servicing_office",
-        "sum insured": "sum_insured",
-        "sum insured per member": "sum_insured_per_member",
-        "total sum insured": "total_sum_insured",
+        # "total sum insured": "total_sum_insured",
+        # "sum insured per member": "sum_insured_per_member",
+        # "total sum insured": "total_sum_insured",
         "net premium": "net_premium",
         "gross premium": "gross_premium",
         "igst": "igst",
@@ -119,17 +119,17 @@ def parse_aditya(pdf_path):
     structured_data = parse_table_data(tables)
     unstructured_text = extract_unstructured_text(pdf_path)
 
-    print("\n📝 Unstructured Text Sent to LLM (First 50 lines):")
+    print("\n Unstructured Text Sent to LLM (First 50 lines):")
     for i, line in enumerate(unstructured_text.splitlines()):
         if i >= 50:
             print("... (truncated)")
             break
         print(f"{i+1:02d}: {line}")
     
-    print(f"\n🔢 Total Characters: {len(unstructured_text)}")
-    print(f"🧠 Approx. Tokens (estimate): {len(unstructured_text) // 4}")
+    print(f"\n Total Characters: {len(unstructured_text)}")
+    print(f" Approx. Tokens (estimate): {len(unstructured_text) // 4}")
 
-    llm_output = get_llm_output(unstructured_text)
+    llm_output = get_llm_output_amogh(unstructured_text)
 
     final = remap_keys(llm_output)
     final.setdefault("policy_info", {}).update(structured_data)

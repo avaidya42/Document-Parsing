@@ -4,8 +4,12 @@ import pdfplumber
 import re
 import pytesseract
 from pdf2image import convert_from_path
-from utils_common import text_space_cleaner
+from utils_common import text_space_cleaner,rec_modifier
 import pandas as pd
+import json
+from prompt_utils_common import get_llm_output_nilay
+from output_schema_common import OutputFull
+
 
 def extract_tables_from_pdf(pdf_path):
     tables = []
@@ -109,7 +113,7 @@ def parse_table_data(tables):
         "ayush treatment": "ayush_treatment_limit"
     }
 
-    print("\n DEBUG: Keys encountered in tables")
+    # print("\n DEBUG: Keys encountered in tables")
     for df in tables:
         df.dropna(how="all", inplace=True)
         df = df.astype(str).map(text_space_cleaner)
@@ -117,7 +121,7 @@ def parse_table_data(tables):
         for _, row in df.iterrows():
             try:
                 raw_key = normalize_key(str(row.iloc[0]))
-                print("  -", raw_key)
+                # print("  -", raw_key)
 
                 # Search for the first non-empty value after the key
                 value = None
@@ -143,39 +147,33 @@ def extract_text_from_scanned_pdf(pdf_path):
         full_text += text + "\n"
     return text_space_cleaner(full_text)
 
-import json
-# from parsing_utils import extract_tables_from_pdf, extract_unstructured_text, parse_table_data, extract_text_from_scanned_pdf
-from prompt_utils_common import get_llm_output
-from output_schema_common import OutputFull
-from utils_common import rec_modifier
-
 def final_parser_nivabupa(pdf_path):
     # try structured table extraction
     tables = extract_tables_from_pdf(pdf_path)
     structured_data = parse_table_data(tables)
 
-    print("\n Extracted structured data from tables:")
-    if not structured_data:
-        print(" No structured data was extracted.")
-    else:
-        for k, v in structured_data.items():
-            print(f"  {k}: {v}")
+    # print("\n Extracted structured data from tables:")
+    # if not structured_data:
+    #     print(" No structured data was extracted.")
+    # else:
+    #     for k, v in structured_data.items():
+    #         print(f"  {k}: {v}")
 
     # get unstructured text and table text (as fallback for LLM)
     unstructured_text = extract_unstructured_text_nivabupa(pdf_path)
 
-    print("\n Unstructured Text Sent to LLM (First 50 lines):")
-    for i, line in enumerate(unstructured_text.splitlines()):
-        if i >= 50:
-            print("... (truncated)")
-            break
-        print(f"{i+1:02d}: {line}")
+    # print("\n Unstructured Text Sent to LLM (First 50 lines):")
+    # for i, line in enumerate(unstructured_text.splitlines()):
+    #     if i >= 50:
+    #         print("... (truncated)")
+    #         break
+    #     print(f"{i+1:02d}: {line}")
 
     print(f"\n Total Characters: {len(unstructured_text)}")
     print(f" Approx. Tokens (estimate): {len(unstructured_text) // 4}")
 
     # get LLM output
-    llm_output = get_llm_output(unstructured_text)
+    llm_output = get_llm_output_nilay(unstructured_text)
 
     # merge LLM and table-based structured data
     final = {**llm_output}

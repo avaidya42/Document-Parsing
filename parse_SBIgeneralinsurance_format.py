@@ -5,7 +5,7 @@ import re
 import unicodedata
 from pdf2image import convert_from_path
 import json
-from prompt_utils_common import get_llm_output
+from prompt_utils_common import get_llm_output_nilay
 from output_schema_common import OutputFull
 from utils_common import text_space_cleaner, rec_modifier
 from typing import List, Dict
@@ -197,7 +197,7 @@ def final_parser_SBIgeneral(pdf_path):
     print(f"\n Total Characters: {len(unstructured_text)}")
     print(f" Approx. Tokens (estimate): {len(unstructured_text) // 4}")
 
-    llm_output = get_llm_output(unstructured_text)
+    llm_output = get_llm_output_nilay(unstructured_text)
 
     final = {**llm_output}
 
