@@ -1,25 +1,25 @@
 {
     "day_care_treatment": {
-        "day_care_treatment": ""
+        "day_care_treatment": "Covered"
     },
     "organ_donor_expenses": {
         "organ_donor_expenses": ""
     },
     "pre_and_post_natal_expenses_IPD": {
-        "expenses_limit_IPD": "",
-        "applicability": ""
+        "expenses_limit_IPD": "Maximum limit : 75,000.00",
+        "applicability": "As per table - IPD basis"
     },
     "maternity_expenses": {
-        "no_of_deliveries": "",
-        "limit_normal_delivery": "",
-        "limit_C_Section": "",
-        "waiting_period": ""
+        "no_of_deliveries": "2 living births only.",
+        "limit_normal_delivery": "Maximum limit : 50,000.00",
+        "limit_C_Section": "75000",
+        "waiting_period": "Waived off"
     },
     "pre_and_post_natal_expenses_OPD": {
-        "expenses_limit_OPD": ""
+        "expenses_limit_OPD": "5000"
     },
     "corporate_buffer": {
-        "sum_insured": "Maximum limit : 1,000,000.00 Per Family : 200,000.00",
+        "sum_insured": "Maximum limit : 1,000,000.00 Per Family : 500,000.00",
         "type_of_ailment": "",
         "type_of_coverage": ""
     },
@@ -35,7 +35,7 @@
         "number_of_weeks": ""
     },
     "preventive_health_check_up": {
-        "benefit_limit": "",
+        "benefit_limit": "7000",
         "clinic_options": ""
     },
     "opd_expenses": {
@@ -58,18 +58,18 @@
         "obesity_control_coverage": ""
     },
     "co_pay": {
-        "policy_co_payment_factor": "Yes, Network copay : 0.0% & Non-Network copay : 10.0%",
+        "policy_co_payment_factor": "Yes, Network copay : 0.0% & Non-Network copay :",
         "co_pay_type": "Network / Non-network distinction"
     },
     "room_rent": {
-        "room_rent_limit": "1.5% of SI for Normal, 3% of SI for ICU",
-        "options_for_deductions": "Proportionate deductions"
+        "room_rent_limit": "",
+        "options_for_deductions": ""
     },
     "road_ambulance": {
-        "road_ambulance_limit": "Maximum limit : 1,500.00"
+        "road_ambulance_limit": "Maximum limit : 2,000.00"
     },
     "ayush_treatment": {
-        "ayush_treatment_limit": "15% of SI or 20000"
+        "ayush_treatment_limit": "25000"
     },
     "medical_advancement_surgery": {
         "medical_advancement_surgery_limit": "50% of Sum Insured"
@@ -81,16 +81,16 @@
         "post_hospitalization_period": "Yes 60.0 day(s)"
     },
     "pre_existing_disease_and_specified_disease": {
-        "pre_existing_disease_and_specified_disease_waiting_period": "waived"
+        "pre_existing_disease_and_specified_disease_waiting_period": "Waived off"
     },
     "extra": {
-        "policy_number": "4101230500000212-01",
+        "policy_number": "4101230500000082-01",
         "name_policyholder": "",
         "cover_type": "",
-        "policy_start_date": "From 22-05-2024 (00:00:00 Hrs)",
-        "policy_end_date": "21-052025 (23:59:59 Hrs)",
-        "primary_insured_members": "631 Employees",
-        "total_sum_insured": "133,900,000.00",
+        "policy_start_date": "From 01-05-2024 (00:00:00 Hrs)",
+        "policy_end_date": "30-042025 (23:59:59 Hrs)",
+        "primary_insured_members": "271 Employees",
+        "total_sum_insured": "135,500,000.00",
         "attack_cover_limit": "",
         "max_limit": "",
         "change_policy": "",
@@ -104,6 +104,6 @@
         "air_ambulance_limit": "",
         "lasik_coverage_limit": "",
         "psychiatric_ailment_limit": "",
-        "total_number_insured": "1804 [Commencement of Policy]"
+        "total_number_insured": "743 [Commencement of Policy]"
     }
 }

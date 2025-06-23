@@ -1,10 +1,11 @@
-# from parsing_utils import extract_tables_from_pdf, extract_unstructured_text, parse_table_data
-from prompt_utils_common import get_llm_output
+from prompt_utils_common import get_llm_output_amogh
 from utils_common import rec_modifier, output_template
 
 
-
-import fitz  # PyMuPDF
+from pdfminer.high_level import extract_pages
+from pdfminer.layout import LTTextContainer
+from typing import List,Dict
+import fitz 
 import unicodedata
 import re
 import pandas as pd
@@ -15,22 +16,71 @@ logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 def extract_tables_from_pdf(pdf_path):
-    doc = fitz.open(pdf_path)
     tables = []
-    for page in doc:
-        found_tables = page.find_tables()
-        for tab in found_tables.tables:
-            df = tab.to_pandas()
-            df = df.astype(str).map(text_space_cleaner)
-            tables.append(df)
-    return tables
+    with fitz.open(pdf_path) as doc:
+        for page in doc[:5]:
+            found_tables = page.find_tables()
+            for tab in found_tables.tables:
+                df = tab.to_pandas()
+                df = df.astype(str).map(text_space_cleaner)
+                tables.append(df)
+        return tables
+
+
+def find_heading_coordinates(pdf_path: str, headings: List[str]) -> Dict[str, Dict]:
+    coords = {}
+    for page_layout in extract_pages(pdf_path):
+        page_num = page_layout.pageid - 1
+        for element in page_layout:
+            if isinstance(element, LTTextContainer):
+                text = text_space_cleaner(element.get_text()).strip()
+                if text in headings:
+                    coords[text] = {
+                        "page": page_num,
+                        "bbox": element.bbox
+                    }
+    return coords
+
+def extract_text_near_heading(pdf_path: str, heading_coords: Dict[str, Dict], offset_x: float = 50.0) -> Dict[str, str]:
+    extracted = {}   
+    with fitz.open(pdf_path) as doc:
+
+        for heading, info in heading_coords.items():
+            page = doc[info["page"]]
+            x0, y0, x1, y1 = info["bbox"]
+            text_instances = page.get_text("dict")["blocks"]
+            for block in text_instances:
+                for line in block.get("lines", []):
+                    for span in line.get("spans", []):
+                        span_x, span_y = span["bbox"][0], span["bbox"][1]
+                        if abs(span_y - y0) < 10 and span_x > x1 and span_x < x1 + offset_x:
+                            extracted[heading] = span["text"]
+                            break
+    return extracted
 
 def extract_unstructured_text(pdf_path):
-    text = ""
-    doc = fitz.open(pdf_path)
-    for page in doc:
-        text += page.get_text()
-    return text_space_cleaner(text)
+    extracted = []
+    capturing = False
+
+    start_keywords = "Policy Coverage (What the policy covers?) (Policy Clause Number/s)Coverages"
+    stop_keywords = "Exclusions(What the policy not cover)"
+
+
+    with fitz.open(pdf_path) as doc:
+        for page in doc[:5]:
+            lines = page.get_text("text").split("\n")
+            for line in lines:
+                cleaned = text_space_cleaner(line.lower())
+                if any(start in cleaned for start in start_keywords):
+                    capturing = True
+                if capturing:
+                    extracted.append(line)
+                if any(stop in cleaned for stop in stop_keywords):
+                    capturing = False
+
+    filtered_text = text_space_cleaner(" ".join(extracted))
+    return filtered_text
+
 
 def normalize_key(key: str) -> str:
     key = unicodedata.normalize("NFKD", key)
@@ -49,7 +99,7 @@ def parse_table_data(tables):
     "policy end date": "policy_end_date",
     "policy tenure": "policy_tenure",
     "policy type": "policy_type",
-    "sum insured": "sum_insured",
+    # "total sum insured": "total_sum_insured",
     "sum insured basis": "sum_insured_basis",
     "category": "category",
     "gstin": "gstin",
@@ -57,17 +107,13 @@ def parse_table_data(tables):
     "policy issuance date": "policy_issuance_date",
     "policyholder name": "policy_holder_name",
     "tpa name": "tpa_name",
-
-    # ✅ Add these to capture premium & rent info
     "net premium": "net_premium",
     "gross premium": "gross_premium",
     "gst": "gst",
     "payment frequency": "payment_frequency",
-
-    # ✅ Critical for room rent logic
     "room rent": "room_rent_limit",
     "icu limit": "icu_room_limit_metro"
-}
+    }
 
 
     for df in tables:
@@ -96,12 +142,35 @@ def parse_table_data(tables):
 def parse_icici(pdf_path):
     tables = extract_tables_from_pdf(pdf_path)
     structured_data = parse_table_data(tables)
+
+    field_source = {}
+
+    for k in structured_data:
+        field_source[k] = "table"
+
+    heading_targets = ["Policy No", "Total Sum Insured"]
+    heading_coords = find_heading_coordinates(pdf_path, heading_targets)
+    heading_data = extract_text_near_heading(pdf_path, heading_coords)
+
+    if "Policy No" in heading_data:
+        structured_data["policy_number"] = heading_data["Policy No"]
+        field_source["policy_number"] = "heading"
+
     unstructured_text = extract_unstructured_text(pdf_path)
-    llm_output = get_llm_output(unstructured_text)
+
+    print("\n📝 Unstructured Text Sent to LLM (First 50 lines):")
+    for i, line in enumerate(unstructured_text.splitlines()):
+        if i >= 50:
+            print("... (truncated)")
+            break
+        print(f"{i+1:02d}: {line}")
+    
+    print(f"\n🔢 Total Characters: {len(unstructured_text)}")
+    print(f"🧠 Approx. Tokens (estimate): {len(unstructured_text) // 4}")
+
+    llm_output = get_llm_output_amogh(unstructured_text)
 
     final = output_template()
-
-    # Skip LLM-driven nested mappings for these sections (handled separately)
     skip_keys = {"maternity", "modern_treatment", "day_care", "other_covers"}
     for section, values in llm_output.items():
         if section in skip_keys:
@@ -111,7 +180,6 @@ def parse_icici(pdf_path):
         elif isinstance(values, dict):
             final[section].update(values)
 
-    # ---------- Maternity ----------
     maternity = llm_output.get("maternity", {})
     if maternity:
         final["maternity"]["limit_normal_delivery"] = maternity.get("normal_delivery_metro", "")
@@ -126,26 +194,26 @@ def parse_icici(pdf_path):
         final["maternity"]["well_mother_expenses"] = maternity.get("well_mother_expenses", "")
         final["maternity"]["maternity_eligibility"] = maternity.get("maternity_eligibility", "")
 
-        # Map pre/post to other fields as well
+        
         pre_post = maternity.get("pre_post_natal_expenses", "")
         final["pre_and_post_natal_expenses_IPD"]["expenses_limit_IPD"] = pre_post
         final["pre_and_post_natal_expenses_IPD"]["applicability"] = pre_post
         final["pre_and_post_natal_expenses_OPD"]["expenses_limit_OPD"] = pre_post
 
-    # ---------- Day Care ----------
+    
     if "day_care" in llm_output:
         final["day_care"] = llm_output["day_care"]
     if "day_care" in llm_output:
         final["day_care_treatment"]["day_care_treatment"] = llm_output["day_care"].get("covered", "Not Applicable")
 
-    # ---------- Modern Treatments ----------
+    
     modern = llm_output.get("modern_treatment", {})
     if modern:
         final["modern_treatment"] = modern
         if any("50%" in str(v).lower() or "covered" in str(v).lower() for v in modern.values()):
             final["medical_advancement_surgery"]["medical_advancement_surgery_limit"] = "Covered up to 50 % of SI."
 
-    # ---------- Other Covers ----------
+    
     other = llm_output.get("other_covers", {})
     if other:
         final["other_covers"].update(other)
@@ -156,8 +224,7 @@ def parse_icici(pdf_path):
         if "terrorism_cover" in other and "cover" in other["terrorism_cover"].lower():
             final["other_covers"]["terrorism_cover"] = "Covered"
 
-    # ---------- Merge Structured Data ----------
-    # → Move key fields from structured table output into correct sections
+    
     if "room_rent_limit" in structured_data:
         final["room_rent"]["room_rent_limit"] = structured_data.pop("room_rent_limit")
     if "icu_room_limit_metro" in structured_data:
@@ -167,13 +234,7 @@ def parse_icici(pdf_path):
         if key in structured_data:
             final["premium_details"][key] = structured_data.pop(key)
 
-    # final["policy_info"].update(structured_data)
-
-    # # ---------- Cleanup redundant keys ----------
-    # for redundant_key in ["start_date", "end_date", "master_policy_no"]:
-    #     final["policy_info"].pop(redundant_key, None)
-
-    # ---------- Normalize nulls/None/cleanup ----------
+  
     rec_modifier(final)
 
     return final

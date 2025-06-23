@@ -2,8 +2,12 @@ import fitz  # PyMuPDF
 import unicodedata
 import re
 import pdfplumber
-from utils_common import text_space_cleaner
+from utils_common import text_space_cleaner,rec_modifier
 import pandas as pd
+import json
+from prompt_utils_common import get_llm_output_nilay
+from output_schema_common import OutputFull
+
 
 def extract_tables_from_pdf(pdf_path):
     tables = []
@@ -90,11 +94,6 @@ def parse_table_data_carehealth(tables):
 
 # pdf_path = "GMC_Policy_2024_2025.pdf"
 
-import json
-from prompt_utils_common import get_llm_output
-from output_schema_common import OutputFull
-from utils_common import rec_modifier
-
 def set_field(field_path: str, value: str, final: dict, source: str):
     keys = field_path.split(".")
     curr = final
@@ -111,7 +110,8 @@ def final_parser_carehealth(pdf_path):
     unstructured_text = extract_unstructured_text_carehealth(pdf_path)
     print(f"\n Total Characters: {len(unstructured_text)}")
     print(f" Approx. Tokens (estimate): {len(unstructured_text) // 4}")
-    llm_output = get_llm_output(unstructured_text)
+    
+    llm_output = get_llm_output_nilay(unstructured_text)
     
     # unpack llm_output dict and store in final
     final = {**llm_output}
