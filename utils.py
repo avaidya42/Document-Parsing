@@ -615,6 +615,43 @@ def text_space_cleaner(text):
     text = re.sub(r'\n', ' ', text)
     return text
 
+
+def text_space_cleaner2(text):
+    text = re.sub(r'\n', ' ', text)
+    return text
+
+
+def convert_to_dict(df, result, key_counts, include_headers=False):
+    def repeat_checker(key_counts, key):
+        if key_counts[key] > 1:
+            final_key = f"{key}_{key_counts[key]}"
+        else:
+            final_key = key
+        return final_key
+
+    if include_headers:
+        cols = df.columns.tolist()
+        if len(cols) >= 2:
+            header_key = text_space_cleaner2(cols[0])
+            key_counts[header_key] += 1
+
+            result[repeat_checker(key_counts, header_key)] = cols[1]
+
+    for key, value in zip(df.iloc[:, 0], df.iloc[:, 1]):
+        if pd.notna(key) and pd.notna(value):
+            cleaned_key = text_space_cleaner2(key)
+            key_counts[cleaned_key] += 1
+
+            # Add number suffix for duplicates
+
+            result[repeat_checker(key_counts, cleaned_key)] = value
+    # return result
+
+
+def key_substring(res, substring):
+    return [key for key in res if substring in key]
+
+
 def reliance_output_template():
     """Template for Reliance insurance policy output"""
     return {
