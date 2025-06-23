@@ -160,6 +160,64 @@ def prompt_field_unmatched_policy(data, maternity_expense, room_restrictions):
     return json_str
 
 
+def prompt_field_magma(data, template):
+    # if "refer claim condition" not in room_restrictions.lower():
+
+    messages = [
+        {
+            'role': 'system',
+            'content': f'''You are an AI data extraction assistant specialized in identifying and extracting specific \
+            data fields from unstructured text. The user will provide you with text which is scraped from an insurance \
+            policy document by Magma HDI, in the form of a JSON. Your \
+            task is to extract relevant fields and output them in the form of a JSON. The output should just be the json \
+            with no prefix or suffix, and the format of the output should be \n
+            --- 
+            {template}
+            ---
+            Your task is to find the appropriate values for the keys in the dictionary, which are left as empty \
+            python strings. If the data corresponding to the value of a key \
+            is not present in the document, \
+            set the value to an empty string. Do not delete any keys, add new keys or change the structure of the output.
+
+            Wherever talking about limits, sum insured, or numbers, only give the number. Do not fill with confirmation \
+            or negation. Leave the sum insured as an empty string if the policy is not covered.
+
+            Keep the following things in mind, for different fields in the output:
+
+            1. All values related to Corporate Buffer must be taken from the corresponding section (mostly Corporate \
+            Floater), if this section \
+            is missing from the data, then do not fill in the values for corporate_buffer['sum_insured']. If present, the \
+            type_of_ailment and type_of_coverage may also mentioned in this section.
+            
+            2. "vision_expenses_cover" for cataract may be present under Disease Wise Sublimits
+            
+            3. Surgery limit for medical_advancement_surgery may be mentioned as Modern Treatment Methods and Advancement \
+            in Technologies under Other Conditions or for Cyberknife treatment, Stem Cell Transplantation, Cochlear Implant
+            
+            4. "mental_illness" may be present under Special Condition as Psychiatric ailments 
+            
+            5. refractive_error_correction_expenses are mentioned under Special Condition \
+            and may sometimes be labeled as lasik. If present, eye_power may be mentioned 
+
+            6. ayush_treatment_limit may be mentioned under Ayurveda, Yoga & Naturopathy, Unani, Siddha, Sowa Rigpa \
+            and Homoeopathy, or as non Allopathic medicine
+
+            Do not make guesses, only take data from the document from the \
+            relevant sections as present in the template.
+
+            '''
+        },
+        {
+            'role': 'user',
+            'content': f'Policy Document: \n {data}'
+        }
+    ]
+    # print(data)
+    response = get_completion_from_messages(messages)
+    json_str = re.search(r'\{.*\}', response, re.DOTALL).group(0)
+    return json_str
+
+
 def prompt_field_unmatched_policy_new(data, maternity_expense, room_restrictions, insurer="reliance"):
     # from utils import output_template_unmatched
     # import re

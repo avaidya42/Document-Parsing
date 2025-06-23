@@ -5,7 +5,7 @@ from utils import output_template_unmatched, convert_to_dict, key_substring
 from collections import Counter
 import re
 import copy
-
+from prompt_utils import prompt_field_magma
 
 # pd.set_option('display.max_rows', None)
 # pd.set_option('display.max_columns', None)
@@ -41,11 +41,11 @@ def manual_parsing(file_path):
             next_df = False
             convert_to_dict(df, result, key_counts, include_headers=True)
 
-    print(json.dumps(result, indent=4))
+    # print(json.dumps(result, indent=4))
     # print(json.dumps(extra_result, indent=4))
 
     output = output_template_unmatched(True)
-    llm_output = copy.deepcopy(output)
+    llm_input = copy.deepcopy(output)
 
     print(len(result), len(output))
 
@@ -58,7 +58,7 @@ def manual_parsing(file_path):
         else:
             output["room_rent"]["room_rent_limit"] = rent
             output["room_rent"]["options_for_deductions"] = ""
-        llm_output.pop("room_rent")
+        llm_input.pop("room_rent")
 
     maternity_waiting = key_substring(result, "Maternity waiting") or key_substring(result, "9 Months Waiting")
     if maternity_waiting:
@@ -82,20 +82,20 @@ def manual_parsing(file_path):
                 # assumption that same value given for both, no supporting data
             if len(numbers) > 2:
                 output["maternity_expenses"]["no_of_deliveries"] = numbers[2]
-        llm_output.pop("maternity_expenses")
+        llm_input.pop("maternity_expenses")
 
     pre_post = result.pop("Pre - Post Hospitalisation", None)
     if pre_post:
         (output["pre_hospitalization"]["pre_hospitalization_period"],
          output["post_hospitalization"]["post_hospitalization_period"]) = [int(x) for x in re.findall(r'\d+', pre_post)[:2]]
-        llm_output.pop("pre_hospitalization")
-        llm_output.pop("post_hospitalization")
+        llm_input.pop("pre_hospitalization")
+        llm_input.pop("post_hospitalization")
 
     pre_disease = result.pop("Pre-existing Disease", None)
     if pre_disease:
         waiver = result.pop("Specific disease waiting period", None)
         output["pre_existing_disease_and_specified_disease"]["pre_existing_disease_and_specified_disease_waiting_period"] = waiver or pre_disease
-        llm_output.pop("pre_existing_disease_and_specified_disease")
+        llm_input.pop("pre_existing_disease_and_specified_disease")
 
     ambulance = result.pop("Ambulance Service", None)
     if ambulance:
@@ -104,7 +104,7 @@ def manual_parsing(file_path):
             output["road_ambulance"]["road_ambulance_limit"] = ambulance_lim[0]
         else:
             output["road_ambulance"]["road_ambulance_limit"] = ambulance
-        llm_output.pop("road_ambulance")
+        llm_input.pop("road_ambulance")
 
     copay = result.pop("Co-Payment", None)
     if copay:
@@ -112,7 +112,7 @@ def manual_parsing(file_path):
             pass
         else:
             output["co_pay"]["policy_co_payment_factor"] = copay
-        llm_output.pop("co_pay")
+        llm_input.pop("co_pay")
 
     ayush = key_substring(result, "Ayush")
     if ayush:
@@ -122,7 +122,7 @@ def manual_parsing(file_path):
         else:
             val = re.findall(r'\d+%|\d+', ayush_con)
             output["ayush_treatment"]["ayush_treatment_limit"] = val[0] if val else ayush_con
-        llm_output.pop("ayush_treatment")
+        llm_input.pop("ayush_treatment")
     # sometimes ayush is also mentioned in special condition, confirm what to do
 
     natal = result.pop("Pre/Post Natal Expenses", None)
@@ -133,20 +133,29 @@ def manual_parsing(file_path):
             val = re.findall(r'\d+%|\d+', natal)
             output["pre_and_post_natal_expenses_IPD"]["expenses_limit_IPD"] = val[0] if val else ""
             output["pre_and_post_natal_expenses_IPD"]["applicability"] = natal
-        llm_output.pop("pre_and_post_natal_expenses_IPD")
+        llm_input.pop("pre_and_post_natal_expenses_IPD")
 
     day = result.pop("Day care procedures", None)
     if day:
         output["day_care_treatment"]["day_care_treatment"] = day
-        llm_output.pop("day_care_treatment")
+        llm_input.pop("day_care_treatment")
 
     organ = result.pop("Organ donor expenses", None)
     if organ:
         output["organ_donor_expenses"]["organ_donor_expenses"] = organ
-        llm_output.pop("organ_donor_expenses")
+        llm_input.pop("organ_donor_expenses")
 
-    print(len(result), len(output), len(llm_output))
+    # print(len(result), len(output), len(llm_input))
     print(json.dumps(output, indent=4))
+    print(json.dumps(llm_input, indent=4))
+
+    return output, llm_input, extra_result, result
+
+def llm_parsing(result, llm_input):
+    llm_output = eval(prompt_field_magma(result, llm_input))
     print(json.dumps(llm_output, indent=4))
 
 
+if __name__ == "__main__":
+    output, llm_input, extra_result, result = manual_parsing(file_path)
+    llm_parsing(result, llm_input)
