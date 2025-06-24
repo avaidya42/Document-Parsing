@@ -2,9 +2,9 @@ import sys
 import json
 import pdfplumber
 
-from reliance_module import parse_reliance_pdf  
-from parse_tataaig_pdf import parse_tata_aig_pdf_text
-from parse_new_india_pdf import parse_new_india_pdf_text
+from reliance_module import final_parser_reliance 
+from parse_tataaig_pdf import final_parser_tata
+from parse_new_india_pdf import final_parser_new_india
 from parse_carehealth_pdf import final_parser_carehealth
 from parse_NivaBupa_format import final_parser_nivabupa
 from parse_SBIgeneralinsurance_format import final_parser_SBIgeneral
@@ -54,11 +54,11 @@ def main():
     insurer = detect_insurer(pdf_text)
 
     if insurer == "reliance":
-        result = parse_reliance_pdf(pdf_path)  
+        result = final_parser_reliance(pdf_path)  
     elif insurer == "tata_aig":
-        result = parse_tata_aig_pdf_text(pdf_text)
+        result = final_parser_tata(pdf_path)
     elif insurer == "new_india":
-        result = parse_new_india_pdf_text(pdf_text)
+        result = final_parser_new_india(pdf_path)
     elif insurer == "carehealth":
         result = final_parser_carehealth(pdf_path)
     elif insurer == "nivabupa":

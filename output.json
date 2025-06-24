@@ -6,12 +6,12 @@
         "organ_donor_expenses": ""
     },
     "pre_and_post_natal_expenses_IPD": {
-        "expenses_limit_IPD": "Maximum limit : 75,000.00",
-        "applicability": "As per table - IPD basis"
+        "expenses_limit_IPD": "",
+        "applicability": ""
     },
     "maternity_expenses": {
-        "no_of_deliveries": "2 living births only.",
-        "limit_normal_delivery": "Maximum limit : 50,000.00",
+        "no_of_deliveries": "2 (1 normal, 1 C-section) - Covered upto 50000 and 75000 respectively.",
+        "limit_normal_delivery": "50000",
         "limit_C_Section": "75000",
         "waiting_period": "Waived off"
     },
@@ -19,13 +19,13 @@
         "expenses_limit_OPD": "5000"
     },
     "corporate_buffer": {
-        "sum_insured": "Maximum limit : 1,000,000.00 Per Family : 500,000.00",
-        "type_of_ailment": "",
-        "type_of_coverage": ""
+        "sum_insured": "1000000",
+        "type_of_ailment": "Cancer, Myocardial Infarction, Open Chest CABG, Open Heart Replacement, Coma, Kidney Failure, Stroke, Major Organ Transplant, Permanent Paralysis, Motor Neuron Disease, Multiple Sclerosis.",
+        "type_of_coverage": "Family SI or 200000 per family whichever is lower."
     },
     "refractive_error_correction_expenses": {
         "si_limit": "",
-        "eye_power": 7.5
+        "eye_power": 0.0
     },
     "hiv_anti_retroviral_therapy": {
         "hiv_anti_retroviral_therapy": ""
@@ -35,7 +35,7 @@
         "number_of_weeks": ""
     },
     "preventive_health_check_up": {
-        "benefit_limit": "7000",
+        "benefit_limit": "",
         "clinic_options": ""
     },
     "opd_expenses": {
@@ -49,7 +49,7 @@
         "benefit_limit": ""
     },
     "mental_illness": {
-        "benefit_limit": ""
+        "benefit_limit": "30000"
     },
     "vision_expenses_cover": {
         "benefit_limit": ""
@@ -58,39 +58,39 @@
         "obesity_control_coverage": ""
     },
     "co_pay": {
-        "policy_co_payment_factor": "Yes, Network copay : 0.0% & Non-Network copay :",
-        "co_pay_type": "Network / Non-network distinction"
+        "policy_co_payment_factor": "50%",
+        "co_pay_type": ""
     },
     "room_rent": {
-        "room_rent_limit": "",
+        "room_rent_limit": "Single Private Room",
         "options_for_deductions": ""
     },
     "road_ambulance": {
-        "road_ambulance_limit": "Maximum limit : 2,000.00"
+        "road_ambulance_limit": "2500"
     },
     "ayush_treatment": {
         "ayush_treatment_limit": "25000"
     },
     "medical_advancement_surgery": {
-        "medical_advancement_surgery_limit": "50% of Sum Insured"
+        "medical_advancement_surgery_limit": "50%"
     },
     "pre_hospitalization": {
-        "pre_hospitalization_period": "Yes 30.0 day(s)"
+        "pre_hospitalization_period": "30 days"
     },
     "post_hospitalization": {
-        "post_hospitalization_period": "Yes 60.0 day(s)"
+        "post_hospitalization_period": "60 days"
     },
     "pre_existing_disease_and_specified_disease": {
-        "pre_existing_disease_and_specified_disease_waiting_period": "Waived off"
+        "pre_existing_disease_and_specified_disease_waiting_period": "Waived Off"
     },
     "extra": {
-        "policy_number": "4101230500000082-01",
-        "name_policyholder": "",
-        "cover_type": "",
-        "policy_start_date": "From 01-05-2024 (00:00:00 Hrs)",
-        "policy_end_date": "30-042025 (23:59:59 Hrs)",
-        "primary_insured_members": "271 Employees",
-        "total_sum_insured": "135,500,000.00",
+        "policy_number": "2-81-24-0000530-000",
+        "name_policyholder": "GLS ELOPAK PRIVATE LIMITED",
+        "cover_type": "Group Activ Health",
+        "policy_start_date": "06/05/2024",
+        "policy_end_date": "05/05/2025",
+        "primary_insured_members": "110",
+        "total_sum_insured": "300000",
         "attack_cover_limit": "",
         "max_limit": "",
         "change_policy": "",
@@ -103,7 +103,12 @@
         "doctor_fee_exclusion": "",
         "air_ambulance_limit": "",
         "lasik_coverage_limit": "",
-        "psychiatric_ailment_limit": "",
-        "total_number_insured": "743 [Commencement of Policy]"
+        "psychiatric_ailment_limit": ""
+    },
+    "policy_info": {
+        "product_code": "5211",
+        "policy_no": "2-81-24-0000530-000",
+        "net_premium": "1040000.0",
+        "gross_premium": "1227200.0"
     }
 }
