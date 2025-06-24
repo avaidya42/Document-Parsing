@@ -98,19 +98,21 @@ def normalize_key(key: str) -> str:
 def parse_table_data(tables):
     extracted_data = {}
     field_mapping = {
-    "Policy Number": "policy_number",
+    "policy number": "policy_number",
+    "policy no": "policy_number",
+    "policy no.": "policy_number",
     "master policy number": "master_policy_number",
     "policy start date": "policy_start_date",
     "policy end date": "policy_end_date",
     "policy tenure": "policy_tenure",
     "policy type": "policy_type",
-    # "total sum insured": "total_sum_insured",
     "sum insured basis": "sum_insured_basis",
     "category": "category",
     "gstin": "gstin",
     "sac code": "sac_code",
     "policy issuance date": "policy_issuance_date",
     "policyholder name": "policy_holder_name",
+    "policyholder": "policy_holder_name",  # new
     "tpa name": "tpa_name",
     "net premium": "net_premium",
     "gross premium": "gross_premium",
@@ -118,7 +120,9 @@ def parse_table_data(tables):
     "payment frequency": "payment_frequency",
     "room rent": "room_rent_limit",
     "icu limit": "icu_room_limit_metro"
-    }
+}
+
+
 
 
     for df in tables:
@@ -148,24 +152,45 @@ def parse_icici(pdf_path):
     tables = extract_tables_from_pdf(pdf_path)
     structured_data = parse_table_data(tables)
 
-    field_source = {}
+    
 
-    heading_targets = ["Policy Number"]
+    final = output_template()  # moved up so it's accessible by set_field
 
-    for k in structured_data:
-        field_source[k] = "table"
-    heading_coords = find_heading_coordinates(pdf_path, heading_targets)
-    heading_data = extract_text_near_heading(pdf_path, heading_coords)
-    print("📌 heading_data:", heading_data)
+    def set_field(path, value):
+        keys = path.split(".")
+        curr = final
+        for key in keys[:-1]:
+            if key not in curr or not isinstance(curr[key], dict):
+                curr[key] = {}
+            curr = curr[key]
+        curr[keys[-1]] = value
 
-
-    if "Policy Number" in heading_data:
-        structured_data["policy_number"] = heading_data["Policy Number"]
-        field_source["Policy_number"] = "heading"
+    # Set all structured fields
+    if "policy_number" in structured_data:
+        set_field("extra.policy_number", structured_data["policy_number"])
+    if "policy_holder_name" in structured_data:
+        set_field("extra.name_policyholder", structured_data["policy_holder_name"])
+    if "policy_start_date" in structured_data:
+        set_field("extra.policy_start_date", structured_data["policy_start_date"])
+    if "policy_end_date" in structured_data:
+        set_field("extra.policy_end_date", structured_data["policy_end_date"])
+    if "net_premium" in structured_data:
+        set_field("premium_details.net_premium", structured_data["net_premium"])
+    if "gst" in structured_data:
+        set_field("premium_details.gst", structured_data["gst"])
+    if "gross_premium" in structured_data:
+        set_field("premium_details.gross_premium", structured_data["gross_premium"])
+    if "payment_frequency" in structured_data:
+        set_field("premium_details.payment_frequency", structured_data["payment_frequency"])
+    if "room_rent_limit" in structured_data:
+        set_field("room_rent.room_rent_limit", structured_data["room_rent_limit"])
+    if "icu_room_limit_metro" in structured_data:
+        set_field("room_rent.icu_room_limit_metro", structured_data["icu_room_limit_metro"])
 
     unstructured_text = extract_unstructured_text(pdf_path)
 
     print("\n📝 Unstructured Text Sent to LLM (First 50 lines):")
+
     for i, line in enumerate(unstructured_text.splitlines()):
         if i >= 50:
             print("... (truncated)")
@@ -175,9 +200,9 @@ def parse_icici(pdf_path):
     print(f"\n🔢 Total Characters: {len(unstructured_text)}")
     print(f"🧠 Approx. Tokens (estimate): {len(unstructured_text) // 4}")
 
-    llm_output = get_llm_output_amogh(unstructured_text)
+    
 
-    final = output_template()
+    llm_output = get_llm_output_amogh(unstructured_text)
 
 
     skip_keys = {"maternity", "modern_treatment", "day_care", "other_covers"}

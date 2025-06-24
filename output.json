@@ -3,16 +3,16 @@
         "day_care_treatment": "Covered"
     },
     "organ_donor_expenses": {
-        "organ_donor_expenses": "Not Covered"
+        "organ_donor_expenses": ""
     },
     "pre_and_post_natal_expenses_IPD": {
         "expenses_limit_IPD": "",
         "applicability": ""
     },
     "maternity_expenses": {
-        "no_of_deliveries": "2 deliveries / terminations.",
-        "limit_normal_delivery": "50000",
-        "limit_C_Section": "50000",
+        "no_of_deliveries": "",
+        "limit_normal_delivery": "",
+        "limit_C_Section": "",
         "waiting_period": "Waived off"
     },
     "pre_and_post_natal_expenses_OPD": {
@@ -25,7 +25,7 @@
     },
     "refractive_error_correction_expenses": {
         "si_limit": "",
-        "eye_power": 0.0
+        "eye_power": 6.5
     },
     "hiv_anti_retroviral_therapy": {
         "hiv_anti_retroviral_therapy": ""
@@ -49,7 +49,7 @@
         "benefit_limit": ""
     },
     "mental_illness": {
-        "benefit_limit": "50000"
+        "benefit_limit": "30000"
     },
     "vision_expenses_cover": {
         "benefit_limit": ""
@@ -58,30 +58,30 @@
         "obesity_control_coverage": ""
     },
     "co_pay": {
-        "policy_co_payment_factor": "",
-        "co_pay_type": ""
+        "policy_co_payment_factor": "50%",
+        "co_pay_type": "cyberknife treatment/Stem Cell Transplantation"
     },
     "room_rent": {
-        "room_rent_limit": "Any Room for Normal Hospitalization and ICU at Actual",
+        "room_rent_limit": "No room rent capping for Sum Insured Rs.100000",
         "options_for_deductions": ""
     },
     "road_ambulance": {
-        "road_ambulance_limit": "2000"
+        "road_ambulance_limit": "1000"
     },
     "ayush_treatment": {
-        "ayush_treatment_limit": "25000"
+        "ayush_treatment_limit": ""
     },
     "medical_advancement_surgery": {
         "medical_advancement_surgery_limit": ""
     },
     "pre_hospitalization": {
-        "pre_hospitalization_period": "30 days"
+        "pre_hospitalization_period": "60 days"
     },
     "post_hospitalization": {
-        "post_hospitalization_period": "60 days"
+        "post_hospitalization_period": "90 days"
     },
     "pre_existing_disease_and_specified_disease": {
-        "pre_existing_disease_and_specified_disease_waiting_period": "Waived Off"
+        "pre_existing_disease_and_specified_disease_waiting_period": ""
     },
     "extra": {
         "policy_number": "",
@@ -90,7 +90,7 @@
         "policy_start_date": "",
         "policy_end_date": "",
         "primary_insured_members": "",
-        "total_sum_insured": "300000",
+        "total_sum_insured": "100000",
         "attack_cover_limit": "",
         "max_limit": "",
         "change_policy": "",
@@ -101,14 +101,8 @@
         "reasonable_and_customary_clause": "",
         "non_selection_clause": "",
         "doctor_fee_exclusion": "",
-        "air_ambulance_limit": "",
+        "air_ambulance_limit": "100000",
         "lasik_coverage_limit": "",
-        "psychiatric_ailment_limit": "50000"
-    },
-    "policy_info": {
-        "product_code": "5211",
-        "policy_no": "2-81-24-0000229-000",
-        "net_premium": "137000.0",
-        "gross_premium": "161660.0"
+        "psychiatric_ailment_limit": "30000"
     }
 }
