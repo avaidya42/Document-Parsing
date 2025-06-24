@@ -1,7 +1,6 @@
 from prompt_utils_common import get_llm_output_amogh
 from utils_common import rec_modifier, remap_keys
-
-
+import pdfplumber
 import fitz  # PyMuPDF
 import unicodedata
 import re
@@ -20,37 +19,34 @@ def extract_tables_from_pdf(pdf_path):
     return tables
 
 def extract_unstructured_text(pdf_path):
-    extracted = []
-    capturing = False
-    start_keywords = ["stamp duty", "policy schedule", "policy coverage"]
-    stop_keywords = [
-    "internal congenital ailments covered",
-    "lucentis restricted",
-    "functional endoscopic sinus surgery",
-    "disease/procedure limit",
-    "riders"
-    ]
+    def extract_with_markers(start_marker, end_marker):
+        text = ""
+        capture = False
+        with pdfplumber.open(pdf_path) as pdf:
+            for page in pdf.pages:
+                lines = page.extract_text().splitlines()
+                for line in lines:
+                    cleaned_line = line.strip()
 
+                    if not capture and start_marker.lower() in cleaned_line.lower():
+                        capture = True
 
-    with fitz.open(pdf_path) as doc:
-        for page in doc:
-            text = page.get_text("text")
-            lines = text.split("\n")
-            for line in lines:
-                cleaned_line = text_space_cleaner(line.lower())
+                    if capture:
+                        text += cleaned_line + "\n"
 
-                if any(start in cleaned_line for start in start_keywords):
-                    capturing = True
+                    if capture and end_marker.lower() in cleaned_line.lower():
+                        capture = False
+                        return text_space_cleaner(text)  # Stop at first successful block
+        return ""  # Nothing found
 
-                if capturing:
-                    extracted.append(line)
+    # try primary markers first
+    text = extract_with_markers("Stamp Duty", "Special Conditions (if any)")
+    
+    # fallback to alternate markers if primary fails
+    # if not text.strip():
+    #     text = extract_with_markers("Benefits Opted", "Policy Rater")
+    return text
 
-                if any(stop in cleaned_line for stop in stop_keywords):
-                    capturing = False
-
-    filtered_text = text_space_cleaner(" ".join(extracted))
-    print("\n📃 Filtered Text Sample:\n", filtered_text[:1000]) 
-    return filtered_text
 
 
 
@@ -132,6 +128,7 @@ def parse_aditya(pdf_path):
     llm_output = get_llm_output_amogh(unstructured_text)
 
     final = remap_keys(llm_output)
+
     final.setdefault("policy_info", {}).update(structured_data)
     rec_modifier(final)
     return final
