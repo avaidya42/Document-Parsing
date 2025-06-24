@@ -1,7 +1,5 @@
 from prompt_utils_common import get_llm_output_amogh
 from utils_common import rec_modifier, output_template
-
-
 from pdfminer.high_level import extract_pages
 from pdfminer.layout import LTTextContainer
 from typing import List,Dict
@@ -11,6 +9,7 @@ import re
 import pandas as pd
 from utils_common import text_space_cleaner
 import logging
+import pdfplumber
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
@@ -29,16 +28,20 @@ def extract_tables_from_pdf(pdf_path):
 
 def find_heading_coordinates(pdf_path: str, headings: List[str]) -> Dict[str, Dict]:
     coords = {}
+    normalized_targets = [normalize_key(h) for h in headings]
+
     for page_layout in extract_pages(pdf_path):
         page_num = page_layout.pageid - 1
         for element in page_layout:
             if isinstance(element, LTTextContainer):
-                text = text_space_cleaner(element.get_text()).strip()
-                if text in headings:
-                    coords[text] = {
-                        "page": page_num,
-                        "bbox": element.bbox
-                    }
+                raw_text = text_space_cleaner(element.get_text()).strip()
+                norm_text = normalize_key(raw_text)
+                for i, norm_target in enumerate(normalized_targets):
+                    if norm_target in norm_text:
+                        coords[headings[i]] = {
+                            "page": page_num,
+                            "bbox": element.bbox
+                        }
     return coords
 
 def extract_text_near_heading(pdf_path: str, heading_coords: Dict[str, Dict], offset_x: float = 50.0) -> Dict[str, str]:
@@ -58,28 +61,30 @@ def extract_text_near_heading(pdf_path: str, heading_coords: Dict[str, Dict], of
                             break
     return extracted
 
+
 def extract_unstructured_text(pdf_path):
-    extracted = []
-    capturing = False
+    def extract_with_markers(start_marker, end_marker):
+        text = ""
+        capture = False
+        with pdfplumber.open(pdf_path) as pdf:
+            for page in pdf.pages:
+                lines = page.extract_text().splitlines()
+                for line in lines:
+                    cleaned_line = line.strip()
 
-    start_keywords = "Policy Coverage (What the policy covers?) (Policy Clause Number/s)Coverages"
-    stop_keywords = "Exclusions(What the policy not cover)"
+                    if not capture and start_marker.lower() in cleaned_line.lower():
+                        capture = True
 
+                    if capture:
+                        text += cleaned_line + "\n"
 
-    with fitz.open(pdf_path) as doc:
-        for page in doc[:5]:
-            lines = page.get_text("text").split("\n")
-            for line in lines:
-                cleaned = text_space_cleaner(line.lower())
-                if any(start in cleaned for start in start_keywords):
-                    capturing = True
-                if capturing:
-                    extracted.append(line)
-                if any(stop in cleaned for stop in stop_keywords):
-                    capturing = False
+                    if capture and end_marker.lower() in cleaned_line.lower():
+                        capture = False
+                        return text_space_cleaner(text)  # Stop at first successful block
+        return ""  
 
-    filtered_text = text_space_cleaner(" ".join(extracted))
-    return filtered_text
+    text = extract_with_markers("Policy Coverage (What the policy covers?) (Policy Clause Number/s)", "Exclusions(What the policy not cover)")
+    return text
 
 
 def normalize_key(key: str) -> str:
@@ -93,7 +98,7 @@ def normalize_key(key: str) -> str:
 def parse_table_data(tables):
     extracted_data = {}
     field_mapping = {
-    "policy number": "policy_number",
+    "Policy Number": "policy_number",
     "master policy number": "master_policy_number",
     "policy start date": "policy_start_date",
     "policy end date": "policy_end_date",
@@ -145,16 +150,18 @@ def parse_icici(pdf_path):
 
     field_source = {}
 
+    heading_targets = ["Policy Number"]
+
     for k in structured_data:
         field_source[k] = "table"
-
-    heading_targets = ["Policy No", "Total Sum Insured"]
     heading_coords = find_heading_coordinates(pdf_path, heading_targets)
     heading_data = extract_text_near_heading(pdf_path, heading_coords)
+    print("📌 heading_data:", heading_data)
 
-    if "Policy No" in heading_data:
-        structured_data["policy_number"] = heading_data["Policy No"]
-        field_source["policy_number"] = "heading"
+
+    if "Policy Number" in heading_data:
+        structured_data["policy_number"] = heading_data["Policy Number"]
+        field_source["Policy_number"] = "heading"
 
     unstructured_text = extract_unstructured_text(pdf_path)
 
@@ -162,7 +169,7 @@ def parse_icici(pdf_path):
     for i, line in enumerate(unstructured_text.splitlines()):
         if i >= 50:
             print("... (truncated)")
-            break
+            break   
         print(f"{i+1:02d}: {line}")
     
     print(f"\n🔢 Total Characters: {len(unstructured_text)}")
@@ -171,6 +178,8 @@ def parse_icici(pdf_path):
     llm_output = get_llm_output_amogh(unstructured_text)
 
     final = output_template()
+
+
     skip_keys = {"maternity", "modern_treatment", "day_care", "other_covers"}
     for section, values in llm_output.items():
         if section in skip_keys:
@@ -185,7 +194,7 @@ def parse_icici(pdf_path):
         final["maternity"]["limit_normal_delivery"] = maternity.get("normal_delivery_metro", "")
         final["maternity"]["limit_C_Section"] = maternity.get("csection_delivery_metro", "")
         final["maternity"]["waiting_period"] = maternity.get("maternity_waiting_period", "")
-        final["maternity"]["no_of_deliveries"] = "2" if "first 2 children" in maternity.get("maternity_eligibility", "").lower() else ""
+        # final["maternity"]["no_of_deliveries"] = "2" if "first 2 children" in maternity.get("maternity_eligibility", "").lower() else ""
         final["maternity"]["complications_limit"] = maternity.get("complications_limit", "")
         final["maternity"]["pre_post_natal_expenses"] = maternity.get("pre_post_natal_expenses", "")
         final["maternity"]["twin_delivery_limit"] = maternity.get("twin_delivery_limit", "")

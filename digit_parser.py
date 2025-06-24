@@ -72,30 +72,59 @@ def extract_tables_from_pdf(pdf_path):
         return tables
 
 
+# def extract_unstructured_text(pdf_path):
+#     text = ""
+#     capture = False
+#     start_marker = "Sum Insured and Room Rent Restriction"
+#     end_marker = "Other Terms and Conditions(Applicable to all Packages)"
+
+#     with pdfplumber.open(pdf_path) as pdf:
+#         for page in pdf.pages:
+#             lines = page.extract_text().splitlines()
+#             for line in lines:
+#                 cleaned_line = line.strip()
+
+#                 if not capture and start_marker.lower() in cleaned_line.lower():
+#                     capture = True
+
+#                 if capture:
+#                     text += cleaned_line + "\n"
+
+#                 if capture and end_marker.lower() in cleaned_line.lower():
+#                     capture = False
+#                     break  # stop scanning current page but continue with others if needed
+
+#     return text_space_cleaner(text)
+
+
 def extract_unstructured_text(pdf_path):
-    text = ""
-    capture = False
-    start_marker = "Sum Insured and Room Rent Restriction"
-    end_marker = "Other Terms and Conditions(Applicable to all Packages)"
+    def extract_with_markers(start_marker, end_marker):
+        text = ""
+        capture = False
+        with pdfplumber.open(pdf_path) as pdf:
+            for page in pdf.pages:
+                lines = page.extract_text().splitlines()
+                for line in lines:
+                    cleaned_line = line.strip()
 
-    with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
-            lines = page.extract_text().splitlines()
-            for line in lines:
-                cleaned_line = line.strip()
+                    if not capture and start_marker.lower() in cleaned_line.lower():
+                        capture = True
 
-                if not capture and start_marker.lower() in cleaned_line.lower():
-                    capture = True
+                    if capture:
+                        text += cleaned_line + "\n"
 
-                if capture:
-                    text += cleaned_line + "\n"
+                    if capture and end_marker.lower() in cleaned_line.lower():
+                        capture = False
+                        return text_space_cleaner(text)  # Stop at first successful block
+        return ""  # Nothing found
 
-                if capture and end_marker.lower() in cleaned_line.lower():
-                    capture = False
-                    break  # stop scanning current page but continue with others if needed
+    # try primary markers first
+    text = extract_with_markers("Policy Details:", "Terms and Conditions")
 
-    return text_space_cleaner(text)
+    if not text.strip():
+        text = extract_with_markers("Sum Insured and Room Rent Restriction", "Other Terms and Conditions(Applicable to all Packages)")
 
+    return text
 
 
 def normalize_key(key: str) -> str:
@@ -204,7 +233,7 @@ def parse_digit_pdf(pdf_path):
         final["maternity_expenses"]["limit_normal_delivery"] = maternity.get("normal_delivery_metro", "")
         final["maternity_expenses"]["limit_C_Section"] = maternity.get("csection_delivery_metro", "")
         final["maternity_expenses"]["waiting_period"] = maternity.get("maternity_waiting_period", "")
-        final["maternity_expenses"]["no_of_deliveries"] = "2" if "first 2 children" in maternity.get("maternity_eligibility", "").lower() else ""
+        # final["maternity_expenses"]["no_of_deliveries"] = "2" if "first 2 children" in maternity.get("maternity_eligibility", "").lower() else ""
 
         pre_post = maternity.get("pre_post_natal_expenses", "")
         final["pre_and_post_natal_expenses_IPD"]["expenses_limit_IPD"] = pre_post

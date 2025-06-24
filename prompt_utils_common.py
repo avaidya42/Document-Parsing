@@ -114,9 +114,13 @@ def generate_llm_prompt_amogh(unstructured_text: str):
 
             Keep the following things in mind, for different fields in the output:
 
-            1. All values related to Corporate Buffer must be taken from the corresponding section, if this section
-            is missing from the data, then do not fill in the values for corporate_buffer['sum_insured']. If present, the \
-            type_of_ailment and type_of_coverage may also mentioned in this section.
+            1. Only extract values for the corporate_buffer section if a dedicated Corporate Buffer section or heading is clearly present in the text.\
+
+            Do not assume or infer Corporate Buffer values based on general mentions of sum insured or benefit limits elsewhere.\
+
+            If no such section exists, leave all corporate_buffer fields (sum_insured, type_of_ailment, type_of_coverage) blank.\
+
+            If the Corporate Buffer section is present, extract the relevant fields as stated explicitly under that section.
 
             2. All values related to pre and post_natal_expenses_IPD and pre_and_post_natal_expenses_OPD must be taken \
             from the pre and post natal section or other conditions section of the data. The applicability may also be \
@@ -165,7 +169,12 @@ def generate_llm_prompt_amogh(unstructured_text: str):
 
             15. If "Modern Treatment" or "Advanced Technology" is covered up to a percentage (e.g. 50%), set medical_advancement_surgery_limit accordingly. 
 
-            16. Unless it says the words "Total sum insured" or "Aggregate sum insured" or something similar , do not print it under "total_sum_insured".
+            16. Only extract a value for total_sum_insured if the text explicitly mentions phrases like "Total Sum Insured", "Aggregate Sum Insured", or clearly equivalent terms.\
+            Do not assume or infer the total sum insured based on standalone numbers or contextually unrelated sum insured values (e.g., corporate buffer, room rent, maternity, etc.).\
+            If no such explicit mention is found, leave total_sum_insured blank.
+
+            17. If under the heading "Psychiatric In-patient Care" , it says something like "We will cover the Medical Expenses up to Rs. 30000 for In-patient treatment".....\
+            then extract the value of 30000 as "psychiatric_ailment_limit": "30000". If there is a diffent value then extract that , not just for 30000.
 
 
             '''
