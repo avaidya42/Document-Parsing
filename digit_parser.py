@@ -263,10 +263,10 @@ def parse_digit_pdf(pdf_path):
 
     
     other = llm_output.get("other_covers", {})
-    lasik = other.get("lasik", "")
-    if "+/-" in lasik or "lens" in lasik.lower():
-        final["refractive_error_correction_expenses"]["eye_power"] = "7"
-        final["refractive_error_correction_expenses"]["si_limit"] = lasik
+    # lasik = other.get("lasik", "")
+    # if "+/-" in lasik or "lens" in lasik.lower():
+    #     final["refractive_error_correction_expenses"]["eye_power"] = "7"
+    #     final["refractive_error_correction_expenses"]["si_limit"] = lasik
 
     
     if "other_covers" not in final:

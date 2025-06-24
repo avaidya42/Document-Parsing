@@ -234,7 +234,10 @@ in Technologies under Other Conditions
 4. For home nursing benefit, keep in mind to convert allowance amount to per week (times 7) if given as per day and 
 to convert duration to number of weeks (divided by 7, return nearest integer) if given in number of days
 
-5. refractive_error_correction_expenses are mentioned under Other Conditions or General conditions . These may be labeled as "Lasik" or "Lasik Surgery". If the document specifies correction index, extract the number as eye_power. Normalize formatting errors in the number and treat them equivalently. If no specific eye power is mentioned or the number is ambiguous, return 0.0. Also extract si_limit if mentioned. If not mentioned, return "".
+5. Refractive error correction expenses (lasik surgery) are mentioned under sections like "Other Conditions", "Frequent Coverages", or "General Conditions". These may be labeled as "Lasik" or "Lasik Surgery".\
+If the document specifies an eye power condition (e.g., "+/-6.5"), extract the number as `eye_power`. Normalize formatting errors (like missing space, mixed symbols, etc.) and treat them equivalently. If no clear numerical value is given, return 0.0 for `eye_power`.\
+If the document explicitly states that lasik is "Covered up to 100% of SI" or similar, extract `"100% of SI"` (or the matching percentage/text) as `si_limit`.\
+❌ Do not assume coverage or fabricate a value if it's not explicitly written. If coverage limit is not clearly mentioned, set `si_limit` to an empty string.
 
 6. Room Restrictions: room_restrictions. 
 If there are no room restrictions, set options_for_deductions as an empty list.
