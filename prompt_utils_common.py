@@ -137,7 +137,10 @@ def generate_llm_prompt_amogh(unstructured_text: str):
             Natal. These may be labeled as "Lasik" or "Lasik Surgery". If the document says something like \
             "Covered if correction index is +/- 7.5D", or "Covered for +-- 7. 5", extract `7.5` as the `eye_power`. \
             Normalize formatting errors like "+-- 7. 5", "+/-7.5", "+ / -7.5" and treat them equivalently. \
-            If no specific eye power is mentioned or the number is ambiguous, return 0.0.
+            If no specific eye power is mentioned or the number is ambiguous, return 0.0.\
+            If the document explicitly states that lasik is "Covered up to 100% of SI" or similar, extract `"100% of SI"` (or the matching percentage/text) as `si_limit`.\
+            ❌ Do not assume coverage or fabricate a value if it's not explicitly written. If coverage limit is not clearly mentioned, set `si_limit` to an empty string.
+
 
 
             6. Room Restrictions: room_restrictions
