@@ -176,6 +176,8 @@ def generate_llm_prompt_amogh(unstructured_text: str):
             17. If under the heading "Psychiatric In-patient Care" , it says something like "We will cover the Medical Expenses up to Rs. 30000 for In-patient treatment".....\
             then extract the value of 30000 as "psychiatric_ailment_limit": "30000". If there is a diffent value then extract that , not just for 30000.
 
+            18. If the document says "Dental Treatment: NA", "Not Applicable", "Not Covered", or anything similar, then set `dental_care.benefit_limit` to an empty string. Do not infer or hallucinate a percentage or value like "1% of sum insured". Only extract a value if it is explicitly numeric or described as covered.
+ 
 
             '''
         },

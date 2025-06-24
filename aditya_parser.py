@@ -1,5 +1,6 @@
 from prompt_utils_common import get_llm_output_amogh
-from utils_common import rec_modifier, remap_keys
+# from utils_common import rec_modifier, remap_keys
+from utils_common import rec_modifier
 import pdfplumber
 import fitz  # PyMuPDF
 import unicodedata
@@ -40,11 +41,11 @@ def extract_unstructured_text(pdf_path):
         return ""  # Nothing found
 
     # try primary markers first
-    text = extract_with_markers("Stamp Duty", "Special Conditions (if any)")
+    text = extract_with_markers("Consolidated Stamp Duty paid vide E-challan GRN ", "Lasik surgery")
     
     # fallback to alternate markers if primary fails
-    # if not text.strip():
-    #     text = extract_with_markers("Benefits Opted", "Policy Rater")
+    if not text.strip():
+        text = extract_with_markers("Consolidated Stamp Duty paid vide E-challan GRN ", "Special Conditions (if any)")
     return text
 
 
@@ -74,41 +75,67 @@ def parse_table_data(tables):
         "policy issued date & time": "issued_date",
         "issuing office": "issuing_office",
         "policy servicing office": "servicing_office",
-        # "total sum insured": "total_sum_insured",
-        # "sum insured per member": "sum_insured_per_member",
-        # "total sum insured": "total_sum_insured",
         "net premium": "net_premium",
         "gross premium": "gross_premium",
         "igst": "igst",
         "gstin": "gst_registration_no",
         "sac code": "sac_code",
-        "category": "Category"
+        "category": "Category",
+        "policy number": "policy_number",
+        "start date time of policy from 0000 hrs of 12042024": "policy_start_date",
+        "expiry date time of policy to midnight 2359 hrs of 11042025": "policy_end_date",
+        "policy issued date time": "issued_date",
+
     }
 
+    # for df in tables:
+    #     df.dropna(how="all", inplace=True)
+    #     df = df.astype(str).applymap(text_space_cleaner)
+
+    #     for _, row in df.iterrows():
+    #         try:
+    #             raw_key = row.iloc[0]
+    #             raw_value = row.iloc[1] if len(row) > 1 else None
+    #         except Exception as e:
+    #             print(f"[ERROR accessing row]: {e}")
+    #             continue
+
+    #         key = normalize_key(str(raw_key))
+    #         value = text_space_cleaner(str(raw_value)) if raw_value else None
+
+    #         print(f"[DEBUG] Raw Key: '{raw_key}' → Normalized: '{key}'")
+    #         print(f"[DEBUG] Raw Value: '{raw_value}' → Normalized: '{value}'")
+
+    #         if key in field_mapping:
+    #             mapped_field = field_mapping[key]
+    #             if mapped_field not in extracted_data:
+    #                 extracted_data[mapped_field] = value
+
+    # return extracted_data
     for df in tables:
         df.dropna(how="all", inplace=True)
-        df = df.astype(str).applymap(text_space_cleaner)
+        df = df.astype(str).map(text_space_cleaner)
 
         for _, row in df.iterrows():
             try:
-                raw_key = row.iloc[0]
-                raw_value = row.iloc[1] if len(row) > 1 else None
-            except Exception as e:
-                print(f"[ERROR accessing row]: {e}")
+                raw_key = normalize_key(str(row.iloc[0]))
+                # print("  -", raw_key)
+
+                # Search for the first non-empty value after the key
+                value = None
+                for cell in row[1:]:
+                    clean_cell = text_space_cleaner(str(cell))
+                    if clean_cell and clean_cell.lower() != "none":
+                        value = clean_cell
+                        break
+
+                if raw_key in field_mapping and field_mapping[raw_key] not in extracted_data:
+                    extracted_data[field_mapping[raw_key]] = value
+            except Exception:
                 continue
 
-            key = normalize_key(str(raw_key))
-            value = text_space_cleaner(str(raw_value)) if raw_value else None
-
-            print(f"[DEBUG] Raw Key: '{raw_key}' → Normalized: '{key}'")
-            print(f"[DEBUG] Raw Value: '{raw_value}' → Normalized: '{value}'")
-
-            if key in field_mapping:
-                mapped_field = field_mapping[key]
-                if mapped_field not in extracted_data:
-                    extracted_data[mapped_field] = value
-
     return extracted_data
+
 
 def parse_aditya(pdf_path):
     tables = extract_tables_from_pdf(pdf_path)
@@ -127,8 +154,46 @@ def parse_aditya(pdf_path):
 
     llm_output = get_llm_output_amogh(unstructured_text)
 
-    final = remap_keys(llm_output)
+    # final = remap_keys(llm_output)
+    final = {**llm_output}
 
     final.setdefault("policy_info", {}).update(structured_data)
     rec_modifier(final)
+    # return final
+    def set_field(path, value):
+        keys = path.split(".")
+        curr = final
+        for key in keys[:-1]:
+            if key not in curr or not isinstance(curr[key], dict):
+                curr[key] = {}
+            curr = curr[key]
+        curr[keys[-1]] = value
+
+    if "policy_number" in structured_data:
+        set_field("extra.policy_number", structured_data["policy_number"])
+    if "name_policyholder" in structured_data:
+        set_field("extra.name_policyholder", structured_data["name_policyholder"])
+    if "policy_start_date" in structured_data:
+        set_field("extra.policy_start_date", structured_data["policy_start_date"])
+    if "policy_end_date" in structured_data:
+        set_field("extra.policy_end_date", structured_data["policy_end_date"])
+    if "primary_insured_members" in structured_data:
+        set_field("extra.primary_insured_members", structured_data["primary_insured_members"])
+    if "total_sum_insured" in structured_data:
+        set_field("extra.total_sum_insured", structured_data["total_sum_insured"])
+    if "day_care_treatment" in structured_data:
+        set_field("day_care_treatment.day_care_treatment", structured_data["day_care_treatment"])
+    if "pre_hospitalization_period" in structured_data:
+        set_field("pre_hospitalization.pre_hospitalization_period",structured_data["pre_hospitalization_period"])
+    if "post_hospitalization_period" in structured_data:
+        set_field("post_hospitalization.post_hospitalization_period",structured_data["post_hospitalization_period"])
+    if "road_ambulance_limit" in structured_data:
+        set_field("road_ambulance.road_ambulance_limit", structured_data["road_ambulance_limit"])
+    if "air_ambulance_limit" in structured_data:
+        set_field("extra.air_ambulance_limit", structured_data["air_ambulance_limit"])
+    if "ayush_treatment_limit" in structured_data:
+        set_field("ayush_treatment.ayush_treatment_limit", structured_data["ayush_treatment_limit"])
+
+    rec_modifier(final)
+
     return final

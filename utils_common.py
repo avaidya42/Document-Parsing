@@ -117,32 +117,32 @@ def text_space_cleaner(text):
     text = re.sub(r'\s+', ' ', text.replace('\xa0', ' '))
     return text.strip()
 
-def remap_keys(output: dict):
-    if "maternity" in output:
-        maternity = output["maternity"]
-        output["maternity_expenses"] = {
-            "limit_normal_delivery": maternity.get("normal_delivery_limit", ""),
-            "limit_C_Section": maternity.get("csection_limit", ""),
-            "waiting_period": maternity.get("waiting_period", ""),
-            "no_of_deliveries": maternity.get("no_of_deliveries", "")
-        }
+# def remap_keys(output: dict):
+#     if "maternity" in output:
+#         maternity = output["maternity"]
+#         output["maternity_expenses"] = {
+#             "limit_normal_delivery": maternity.get("normal_delivery_limit", ""),
+#             "limit_C_Section": maternity.get("csection_limit", ""),
+#             "waiting_period": maternity.get("waiting_period", ""),
+#             "no_of_deliveries": maternity.get("no_of_deliveries", "")
+#         }
 
-    if "psychiatric_care" in output:
-        psychiatric = output["psychiatric_care"]
-        output["mental_illness"] = {
-            "benefit_limit": psychiatric.get("psychiatric_care_limit", "")
-        }
+#     if "psychiatric_care" in output:
+#         psychiatric = output["psychiatric_care"]
+#         output["mental_illness"] = {
+#             "benefit_limit": psychiatric.get("psychiatric_care_limit", "")
+#         }
 
-    if "ambulance" in output:
-        ambulance = output["ambulance"]
-        output["road_ambulance"] = {
-            "road_ambulance_limit": ambulance.get("road_ambulance_limit", "")
-        }
+#     if "ambulance" in output:
+#         ambulance = output["ambulance"]
+#         output["road_ambulance"] = {
+#             "road_ambulance_limit": ambulance.get("road_ambulance_limit", "")
+#         }
 
-    if "in_patient_hospitalization" in output:
-        hosp = output["in_patient_hospitalization"]
-        output["room_rent"] = {
-            "room_rent_limit": hosp.get("room_rent", "")
-        }
+#     if "in_patient_hospitalization" in output:
+#         hosp = output["in_patient_hospitalization"]
+#         output["room_rent"] = {
+#             "room_rent_limit": hosp.get("room_rent", "")
+#         }
 
-    return output
+#     return output

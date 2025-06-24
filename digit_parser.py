@@ -106,23 +106,22 @@ def extract_unstructured_text(pdf_path):
                 lines = page.extract_text().splitlines()
                 for line in lines:
                     cleaned_line = line.strip()
-
                     if not capture and start_marker.lower() in cleaned_line.lower():
                         capture = True
-
                     if capture:
                         text += cleaned_line + "\n"
-
                     if capture and end_marker.lower() in cleaned_line.lower():
                         capture = False
-                        return text_space_cleaner(text)  # Stop at first successful block
-        return ""  # Nothing found
+                        return text_space_cleaner(text)
+        return ""
 
-    # try primary markers first
-    text = extract_with_markers("Policy Details:", "Terms and Conditions")
+    text = extract_with_markers("Sum Insured and Room Rent Restriction", "Digit Advantage Covers")
 
     if not text.strip():
         text = extract_with_markers("Sum Insured and Room Rent Restriction", "Other Terms and Conditions(Applicable to all Packages)")
+
+    if not text.strip():
+        text = extract_with_markers("All the occasions where money hits your account" , "Terms and Conditions")
 
     return text
 
